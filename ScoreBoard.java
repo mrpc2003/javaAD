@@ -136,11 +136,8 @@ public class ScoreBoard {
 	}
 
 	boolean gameOverCheck() { //checks if the game is over
-		boolean gameOver=false;
-		if(!(p2AcesTF||p2DeucesTF||p2ThreesTF||p2FoursTF||p2FivesTF||p2SixesTF||
-				p2ChoiceTF||p2FourOfKindTF||p2FullHouseTF||p2SmallStraightTF||p2LargeStraightTF||p2YachtTF)) 
-		{gameOver=true;}
-		return gameOver;
+		return !(p2AcesTF || p2DeucesTF || p2ThreesTF || p2FoursTF || p2FivesTF || p2SixesTF ||
+				p2ChoiceTF || p2FourOfKindTF || p2FullHouseTF || p2SmallStraightTF || p2LargeStraightTF || p2YachtTF);
 	}
 }
 
