@@ -62,7 +62,7 @@ class GameTest {
 //				System.out.print("(" + this.entities[i][j].x + ", " + this.entities[i][j].y + ") ");
             }
             for(int k=0; k<16; k++) {
-                System.out.println("");
+                System.out.println();
             }
             System.out.println("두 번째 플레이어가 고스트를 정하실 차례입니다.");
         }

@@ -1,36 +1,34 @@
 package AD_Project;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+enum ActorState {Hit, Stay, Bust}
 
-public class blackjack_withclass 
+public class blackjack_withclass
 {
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
 		Game blackjack = new Game();
-		
+
 		blackjack.init();
-		
+
 		blackjack.play();
-		
+
 		blackjack.end();
 	}
 }
-
-enum ActorState {Hit, Stay, Bust}
 
 class Actor
 {
 	protected ArrayList<Integer> myCard = new ArrayList<Integer>();
 	private ActorState state = ActorState.Hit;
-	
 	public void AddCard(int card)
 	{
 		myCard.add(card);
 	}
-	
 	ActorState getState()			{ return state; }
-	void setState(ActorState state)	{ this.state = state; }	
-	
+	void setState(ActorState state)	{ this.state = state; }
 	public int getSum()
 	{
 		int sum = 0;
@@ -40,7 +38,6 @@ class Actor
 		}
 		return sum;
 	}
-	
 	void showCardList()
 	{
 		for (int i : myCard)
@@ -48,23 +45,19 @@ class Actor
 			System.out.printf("%2d ", i);
 		}
 		System.out.printf("합: %d", getSum());
-		System.out.println("");
+		System.out.println();
 	}
-	
 	void reset()
 	{
 		state = ActorState.Hit;
 		myCard.clear();
 	}
 }
-
 class Player extends Actor
 {
+	private final String name;
 	private int coin = 0;
 	private int betCoin = 0;
-	private String name;
-	
-	
 	Player(String name) 
 	{
 		this.name = name;
@@ -77,24 +70,19 @@ class Player extends Actor
 	
 	int getBetCoin()				{ return this.betCoin; }
 	void setBetCoin(int betCoin)	{ this.betCoin = betCoin; }
-	
 }
-
 class Dealer extends Actor
 {
-	private int sum = 0;
-	
+
 	Dealer() {}
-	
-	void setSum(Integer sum)		{ this.sum = sum;}
-	
+	void setSum(Integer sum)		{
+		int sum1 = sum;
+	}
 	@Override
 	void showCardList()
 	{
 		System.out.printf("%2d, %s", myCard.get(0), "*");
 	}
-	
-	
 }
 
 class Game  								//전체 게임 관할
@@ -104,9 +92,7 @@ class Game  								//전체 게임 관할
 	Dealer dealer = new Dealer();
 	CardDeck carddeck = new CardDeck();
 	int playCount = 0;
-	
 	Game() {}
-	
 	public void init()
 	{
 		playCount = 5;
@@ -129,17 +115,14 @@ class Game  								//전체 게임 관할
 			giveInitialCard();
 			
 			// 21 판단
-			while(true)
-			{
+			do {
 				displayGame();
-				
+
 				//hit stay묻기
 				HitOrStay();
-				
+
 				//판단
-				if (p1.getState() != ActorState.Hit && p2.getState() != ActorState.Hit)
-					break;
-			}
+			} while (p1.getState() == ActorState.Hit || p2.getState() == ActorState.Hit);
 			
 			DealerCard();
 			
@@ -147,7 +130,6 @@ class Game  								//전체 게임 관할
 			Winner(SelectTopPlayers());
 		}
 	}
-	
 	public void end()
 	{
 		System.out.println("블랙잭 끝");
@@ -155,7 +137,6 @@ class Game  								//전체 게임 관할
 		
 		//메인 게임이랑 연결하기
 	}
-	
 	private void giveInitialCard()
 	{
 		for (int i = 0; i < 2; i++)
@@ -165,7 +146,6 @@ class Game  								//전체 게임 관할
 			dealer.AddCard(carddeck.getCard());
 		}
 	}
-	
 	void RoundStart(int round)
 	{
 		p1.reset();
@@ -174,7 +154,6 @@ class Game  								//전체 게임 관할
 		System.out.println("-------------------------------------");
 		System.out.printf("%d번째 라운드를 시작합니다.\n", round);
 	}
-	
 	void displayGame()
 	{
 		System.out.print("p1 카드 : ");
@@ -185,11 +164,9 @@ class Game  								//전체 게임 관할
 		dealer.showCardList();
 		System.out.println();
 	}
-	
 	void HitOrStay()
 	{
 		Scanner sc = new Scanner(System.in);
-		
 		if (p1.getState() == ActorState.Hit)
 		{
 			while(true)
