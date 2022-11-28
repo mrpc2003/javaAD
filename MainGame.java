@@ -1,5 +1,6 @@
 package AD_Project;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
@@ -138,11 +139,13 @@ class GamePlayer{
     int [][] playerPosition = new int[2][2];
 }
 public class MainGame {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         GamePlayer player1 = new GamePlayer();
         GamePlayer player2 = new GamePlayer();
         Scanner scanner = new Scanner(System.in);
+        int MiniGameCount = -1;
+
 
 
         System.out.println("Player 1의 이름을 입력해주세요: ");
@@ -156,23 +159,12 @@ public class MainGame {
 
         // 게임 시작
         while(!player1.finish || !player2.finish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
-            System.out.println("주사위를 굴립니다.");
-            dice();
+            miniGame(MiniGameCount++);
 
 
-            if(player1.isWin){ // 플레이어 1이 승리했을 경우
-                System.out.println(player1.name + "님이 승리하셨습니다.");
-                player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
-                player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
-            }
-            else if(player2.isWin){ // 플레이어 2가 승리했을 경우
-                System.out.println(player2.name + "님이 승리하셨습니다.");
-                player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
-                player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
-            } else { // 무승부일 경우
-                player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
-                player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
-            }
+
+
+
         }
 
     }
@@ -199,29 +191,84 @@ public class MainGame {
             }
         }
     }
-    public void scoreChange(String p1name, String p2name, int p1score, int p2score) {
+    public static void scoreChange(String p1name, String p2name, int p1score, int p2score) {
         System.out.println(p1name+"와(과)"+p2name+"의 점수가 변경되었습니다.");
         System.out.println(p1name+"의 점수: "+p2score);
         System.out.println(p2name+"의 점수: "+p1score);
 
     }
-    public void positionChange(String p1name, String p2name) {
+    public static void positionChange(String p1name, String p2name) {
         System.out.println(p1name+"와(과)"+p2name+"의 위치가 변경되었습니다.");
     }
+    public static void playerTurn(String name) {
+        System.out.println(name+"의 차례입니다.");
+        System.out.println("주사위를 굴립니다.");
+        dice();
+    }
+    public void calculateMiniGameScore(GamePlayer player1, GamePlayer player2) {
+        if(player1.isWin){ // 플레이어 1이 승리했을 경우
+            System.out.println(player1.name + "님이 승리하셨습니다.");
+            player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
+            player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
+        }
+        else if(player2.isWin){ // 플레이어 2가 승리했을 경우
+            System.out.println(player2.name + "님이 승리하셨습니다.");
+            player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
+            player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
+        } else { // 무승부일 경우
+            player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
+            player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
+        }
+    }
 
-    public void bonusScore(boolean bonus) {
+    public static void bonusScore(boolean bonus) {
         System.out.println("미니게임 점수 2배 특전을 획득하셨습니다.");
         System.out.println("이후 도착하는 1개의 미니게임 점수가 2배로 증가합니다.");
         bonus = true;
     }
-    public void miniGame(){
+    public static void miniGame(int MiniGameCount) throws IOException, InterruptedException {
+
         System.out.println("미니게임을 시작합니다.");
         System.out.println("미니게임은 랜덤으로 실행됩니다.");
 
+        // 4개의 미니게임 중 랜덤으로 선택
+        if(MiniGameCount == 0){
+            System.out.println("미니게임은 총 4개가 있습니다.");
+            System.out.println("1. Yacht Dice");
+            System.out.println("2. 고스트 게임");
+            System.out.println("3. 블랙잭");
+            System.out.println("4. 빙고게임");
+        }
 
+        //4개의 원소가 들어가는 배열 생성
+        int[] miniGame = new int[4];
+        //배열에 1~4까지의 숫자를 랜덤으로 넣기
+        for(int i=0; i<miniGame.length; i++) {
+            miniGame[i] = (int)(Math.random()*4)+1;
+            for(int j=0; j<i; j++) {
+                if(miniGame[i]==miniGame[j]) {
+                    i--;
+                    break;
+                }
+            }
+        }
+        //배열의 순서대로 각 숫자에 맞는 미니게임 실행
 
+        if(miniGame[MiniGameCount]==1) {
+            System.out.println("Yacht Dice 를 시작합니다.");
+            YachtGame_Main.start();
+        }
+        else if(miniGame[MiniGameCount]==2){
+            System.out.println("고스트 게임을 시작합니다.");
+        }
+        else if(miniGame[MiniGameCount]==3){
+            System.out.println("블랙잭을 시작합니다.");
+        }
+        else if(miniGame[MiniGameCount]==4){
+            System.out.println("빙고게임을 시작합니다.");
+        }
     }
-    public void backward(String playername) {
+    public static void backward(String playername) {
         System.out.println("1칸 뒤로 이동합니다.");
         System.out.println(playername+"의 위치가 변경되었습니다.");
 
