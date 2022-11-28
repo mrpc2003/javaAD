@@ -169,6 +169,9 @@ public class MainGame {
                 System.out.println(player2.name + "´ÔÀÌ ½Â¸®ÇÏ¼Ì½À´Ï´Ù.");
                 player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
                 player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
+            } else { // ¹«½ÂºÎÀÏ °æ¿ì
+                player1.Score += winnerScoreUp(player1.isWin, player1.bonus);
+                player2.Score += winnerScoreUp(player2.isWin, player2.bonus);
             }
         }
 

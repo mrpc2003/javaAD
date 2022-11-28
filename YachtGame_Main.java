@@ -24,16 +24,16 @@ class mainGameConnect{
 	}
 }
 class p1player extends mainGameConnect{
-	boolean result;
-	p1player(boolean isWin){
-		this.result = isWin;
+	static boolean p1isWin = false;
+	public static Boolean p1Resutl(){
+		return p1isWin;
 	}
 
 }
 class p2player extends mainGameConnect{
-	boolean result;
-	p2player(boolean isWin){
-		this.result = isWin;
+	static boolean p2isWin = false;
+	public static Boolean p2Resutl(){
+		return p2isWin;
 	}
 }
 
@@ -776,9 +776,11 @@ public class YachtGame_Main {
 			System.out.println("게임이 끝났습니다.");
 			if (sb.p1Total > sb.p2Total) {
 				System.out.println(p1 + "의 승리입니다.");
+				p1player.p1isWin = true;
 				System.exit(0);
 			} else if (sb.p1Total < sb.p2Total) {
 				System.out.println(p2 + "의 승리입니다.");
+				p2player.p2isWin = true;
 				System.exit(0);
 			} else {
 				System.out.println("무승부입니다.");
