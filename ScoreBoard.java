@@ -16,7 +16,7 @@ public class ScoreBoard {
 	int p1LargeStraight=0,			p2LargeStraight=0;
 	int p1Yacht=0,					p2Yacht=0;
 	int p1Total=0,					p2Total=0;
-	
+
 	String p1AcesS="  ", 			p2AcesS="  ";
 	String p1DeucesS="  ", 			p2DeucesS="  ";
 	String p1ThreesS="  ", 			p2ThreesS="  ";
@@ -32,9 +32,9 @@ public class ScoreBoard {
 	String p1LargeStraightS="  ",	p2LargeStraightS="  ";
 	String p1YachtS="  ",			p2YachtS="  ";
 	String p1TotalS="  ",			p2TotalS="  ";
-	
+
 	String p1BarSpace="--",         p2BarSpace="--";
-	
+
 	boolean p1AcesTF=true, 			p2AcesTF=true;
 	boolean p1DeucesTF=true, 		p2DeucesTF=true;
 	boolean p1ThreesTF=true, 		p2ThreesTF=true;
@@ -61,7 +61,7 @@ public class ScoreBoard {
 	String p1LargeStraightTFP=" ",	p2LargeStraightTFP=" ";
 	String p1YachtTFP=" ",			p2YachtTFP=" ";
 	String p1TotalTFP=" ",			p2TotalTFP=" ";
-	
+
 	void printScoreBoard() { //점수판 출력
 		System.out.println("┏------------------------------------┓\n"
 				+"|                  <1p>       <2p>   |\n"
@@ -96,10 +96,10 @@ public class ScoreBoard {
 		} else {
 			p2Subtotal2=p2Subtotal;
 		}
-		
+
 		p1Total=p1Subtotal2+p1Choice+p1FourOfKind+p1FullHouse+p1SmallStraight+p1LargeStraight+p1Yacht;
 		p2Total=p2Subtotal2+p2Choice+p2FourOfKind+p2FullHouse+p2SmallStraight+p2LargeStraight+p2Yacht;
-		
+
 		if(p1Aces>=10) {p1AcesS=" ";}					if(p2Aces>=10) {p2AcesS=" ";}
 		if(p1Deuces>=10) {p1DeucesS=" ";}				if(p2Deuces>=10) {p2DeucesS=" ";}
 		if(p1Threes>=10) {p1ThreesS=" ";}				if(p2Threes>=10) {p2ThreesS=" ";}
@@ -114,13 +114,13 @@ public class ScoreBoard {
 		if(p1LargeStraight>=10) {p1LargeStraightS=" ";}	if(p2LargeStraight>=10) {p2LargeStraightS=" ";}
 		if(p1Yacht>=10) {p1YachtS=" ";}					if(p2Yacht>=10) {p2YachtS=" ";}
 		if(p1Total>=10) {p1TotalS=" ";}					if(p2Total>=10) {p2TotalS=" ";}
-		
+
 		if(p1Subtotal>=100) {p1SubtotalS="";}			if(p2Subtotal>=100) {p2SubtotalS="";}
 		if(p1Total>=100) {p1TotalS="";}					if(p2Total>=100) {p2TotalS="";}
-		
+
 		if(p1Subtotal>=100) {p1BarSpace="";}			else if(p1Subtotal>=10) {p1BarSpace="-";}
 		if(p2Subtotal>=100) {p2BarSpace="";}			else if(p2Subtotal>=10) {p2BarSpace="-";}
-		
+
 		if(!p1AcesTF) {p1AcesTFP="■";}					if(!p2AcesTF) {p2AcesTFP="■";}
 		if(!p1DeucesTF) {p1DeucesTFP="■";}				if(!p2DeucesTF) {p2DeucesTFP="■";}
 		if(!p1ThreesTF) {p1ThreesTFP="■";}				if(!p2ThreesTF) {p2ThreesTFP="■";}
@@ -140,4 +140,3 @@ public class ScoreBoard {
 				p2ChoiceTF || p2FourOfKindTF || p2FullHouseTF || p2SmallStraightTF || p2LargeStraightTF || p2YachtTF);
 	}
 }
-

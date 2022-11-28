@@ -7,6 +7,36 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
+class mainGameConnect{
+	static String p1 = "Player1";
+	static String p2 = "Player2";
+	public void setP1name(String p1name){
+		p1 = p1name;
+	}
+	public void setP2name(String p2name){
+		p2 = p2name;
+	}
+	public static String getP1Name(){
+		return p1;
+	}
+	public static String getP2Name(){
+		return p2;
+	}
+}
+class p1player extends mainGameConnect{
+	boolean result;
+	p1player(boolean isWin){
+		this.result = isWin;
+	}
+
+}
+class p2player extends mainGameConnect{
+	boolean result;
+	p2player(boolean isWin){
+		this.result = isWin;
+	}
+}
+
 public class YachtGame_Main {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
@@ -18,10 +48,8 @@ public class YachtGame_Main {
 		String temp = ""; // 플레이어가 입력한 답을 임시로 저장
 		int[] dice = new int[5]; // 주사위 5개를 저장할 배열
 		System.out.println("-Yacht Dice-"); // 게임 이름 출력
-		System.out.print("1p user의 닉네임을 입력하세요."); // 플레이어1의 이름 입력
-		p1 = br.readLine(); // 플레이어1의 이름 입력
-		System.out.print("2p user의 닉네임을 입력하세요>"); // 플레이어2의 이름 입력
-		p2 = br.readLine(); // 플레이어2의 이름 입력
+		p1 = p1player.getP1Name(); // 플레이어1의 이름 가져오기
+		p2 = p2player.getP2Name(); // 플레이어2의 이름 가져오기
 		System.out.println(p1 + "님과 " + p2 + "님의 Yacht Dice를 시작합니다."); // 플레이어1과 플레이어2의 이름 출력
 		for (int i = 3; i > 0; i--) { // 3초 카운트 다운
 			time(); // 1초 쉬는 메소드
