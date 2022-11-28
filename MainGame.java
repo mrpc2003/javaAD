@@ -142,14 +142,12 @@ class GamePlayer{
 
     int [][] playerPosition = new int[2][2];
 }
-
 public class MainGame {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         GamePlayer player1 = new GamePlayer();
         GamePlayer player2 = new GamePlayer();
         GamePlayer myself = new GamePlayer();
-
 
         Scanner scanner = new Scanner(System.in);
         int MiniGameCount = -1;
@@ -162,7 +160,6 @@ public class MainGame {
 
         System.out.println("게임을 시작합니다.");
 
-
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
 
@@ -171,7 +168,6 @@ public class MainGame {
                 miniGame(MiniGameCount++);
             } else if(isChance){
                 chance(MiniGameCount++, player1.Score, player2.Score, player1.name, player2.name, player1.isTurn, player2.isTurn,  player1.isBonus,  player2.isBonus);
-
             }  else {
                 //랜덤으로 3~5점 점수 획득
                 int randomscore = (int) (Math.random() * 3) + 3;
@@ -224,7 +220,6 @@ public class MainGame {
             }
         }
     }
-
     public static void chance(int MiniGameCount,int p1Score, int p2Score, String p1name, String p2name, boolean p1turn, boolean p2turn, boolean p1isBonus, boolean p2isBonus) throws IOException, InterruptedException {
         boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
         if (isBonus){
@@ -234,7 +229,6 @@ public class MainGame {
             } else if (p2turn){
                 bonusScore(p2isBonus);
             }
-
         } if (isMiniGame){
             miniGame(MiniGameCount);
         } if (isScoreChange){
@@ -272,7 +266,6 @@ public class MainGame {
         System.out.println("주사위를 굴립니다.");
         dice();
     }
-
     public void calculateMiniGameScore(GamePlayer player1, GamePlayer player2) {
         if(player1.isWin){ // 플레이어 1이 승리했을 경우
             System.out.println(player1.name + "님이 승리하셨습니다.");
@@ -288,7 +281,6 @@ public class MainGame {
             player2.Score += winnerScoreUp(player2.isWin, player2.isBonus);
         }
     }
-
     public static void bonusScore(boolean bonus) {
         System.out.println("미니게임 점수 2배 특전을 획득하셨습니다.");
         System.out.println("이후 도착하는 1개의 미니게임 점수가 2배로 증가합니다.");
@@ -338,12 +330,7 @@ public class MainGame {
         }
     }
     public static void backward(String myself) {
-
         System.out.println("1칸 뒤로 이동합니다.");
         System.out.println(myself+"의 위치가 변경되었습니다.");
-
     }
-
-
-
 }
