@@ -132,10 +132,14 @@ class board{
 class GamePlayer{
     String name; // 플레이어 이름
     int dice, Score = 0;
-    boolean finish = false; // 플레이어가 도착지점에 도착했는지 확인하는 변수
+    boolean isFinish = false; // 플레이어가 도착지점에 도착했는지 확인하는 변수
     boolean isWin; // 플레이어가 승리했는지 확인하는 변수
     int dicePosition; // 주사위를 던진 위치를 저장하는 변수
     boolean bonus = false; // 보너스를 받았는지 확인하는 변수
+    boolean isTurn = false; // 플레이어의 차례인지 확인하는 변수
+    boolean isMiniGame = false; // 미니게임을 했는지 확인하는 변수
+    boolean isChance = false; // 플레이어가 기회카드를 뽑았는지 확인하는 변수
+
     int [][] playerPosition = new int[2][2];
 }
 public class MainGame {
@@ -145,8 +149,6 @@ public class MainGame {
         GamePlayer player2 = new GamePlayer();
         Scanner scanner = new Scanner(System.in);
         int MiniGameCount = -1;
-
-
 
         System.out.println("Player 1의 이름을 입력해주세요: ");
         player1.name = scanner.nextLine();
@@ -158,15 +160,35 @@ public class MainGame {
 
 
         // 게임 시작
-        while(!player1.finish || !player2.finish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
-            miniGame(MiniGameCount++);
+        while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
 
+            System.out.println("게임판을 출력합니다.");
+            if (isMiniGame) {
+                miniGame(MiniGameCount);
+            } else if(isChance){
+                chance(MiniGameCount, player1.Score, player2.Score, player1.name, player2.name);
 
+            } else if(isFinish){
 
-
-
+            } else {
+                //랜덤으로 3~5점 점수 획득
+                int randomscore = (int) (Math.random() * 3) + 3;
+                System.out.println("점수를 획득했습니다.");
+                if (player1.isTurn) {
+                    System.out.println("획득한 점수: "+randomscore);
+                    player1.Score += randomscore;
+                    System.out.println(player1.name + "의 점수: " + player1.Score);
+                    player1.isTurn = false;
+                    player2.isTurn = true;
+                } else if (player2.isTurn) {
+                    System.out.println("획득한 점수: "+randomscore);
+                    player2.Score += randomscore;
+                    System.out.println(player2.name + "의 점수: " + player2.Score);
+                    player1.isTurn = true;
+                    player2.isTurn = false;
+                }
+            }
         }
-
     }
     public static void dice() {
         int dice = (int) (Math.random() * 3) + 1;
@@ -191,6 +213,22 @@ public class MainGame {
             }
         }
     }
+
+    public static void chance(int MiniGameCount,int p1Score, int p2Score, String p1name, String p2name) throws IOException, InterruptedException {
+        boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
+        if (isBonus){
+            bonusScore(true);
+        } if (isMiniGame){
+            miniGame(MiniGameCount);
+        } if (isScoreChange){
+            scoreChange(p1name, p2name, p1Score, p2Score);
+        } if (isPositionChange){
+            positionChange(p1name, p2name);
+        } if (isBackward) {
+            backward(p1name, p2name);
+        }
+
+    }
     public static void scoreChange(String p1name, String p2name, int p1score, int p2score) {
         System.out.println(p1name+"와(과)"+p2name+"의 점수가 변경되었습니다.");
         System.out.println(p1name+"의 점수: "+p2score);
@@ -205,6 +243,7 @@ public class MainGame {
         System.out.println("주사위를 굴립니다.");
         dice();
     }
+
     public void calculateMiniGameScore(GamePlayer player1, GamePlayer player2) {
         if(player1.isWin){ // 플레이어 1이 승리했을 경우
             System.out.println(player1.name + "님이 승리하셨습니다.");
@@ -234,6 +273,7 @@ public class MainGame {
         // 4개의 미니게임 중 랜덤으로 선택
         if(MiniGameCount == 0){
             System.out.println("미니게임은 총 4개가 있습니다.");
+            System.out.println();
             System.out.println("1. Yacht Dice");
             System.out.println("2. 고스트 게임");
             System.out.println("3. 블랙잭");
@@ -268,9 +308,10 @@ public class MainGame {
             System.out.println("빙고게임을 시작합니다.");
         }
     }
-    public static void backward(String playername) {
+    public static void backward(String p1name, String p2name) {
+
         System.out.println("1칸 뒤로 이동합니다.");
-        System.out.println(playername+"의 위치가 변경되었습니다.");
+        System.out.println(p1name+"의 위치가 변경되었습니다.");
 
     }
 }
