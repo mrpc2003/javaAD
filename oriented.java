@@ -397,7 +397,7 @@ class Ghost_move {
     }
 }
 
-class Oriented {
+class oriented {
     public static void start(String Player1, String Player2) {
 //        mainGameConnect mg = new mainGameConnect();
         mainGameConnect.setP1name(Player1);

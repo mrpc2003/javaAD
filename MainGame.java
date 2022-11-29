@@ -9,7 +9,7 @@ class MainGameBoard{
     GamePlayer p ;
     static int [][] board = new int[4][4];
     int x =3, y=3;
-    int rest,cnt, dice;
+    int rest,cnt,cnt2=0, dice;
     String square_up = "┏━━━━━┓";
     String square_bottom = "┗━━━━━┛";
     String square_height_m = "┃" + "  M  "+ "┃" ;
@@ -22,6 +22,7 @@ class MainGameBoard{
     MainGameBoard(GamePlayer p, int dice){
         this.p = p;
         this.dice = dice;
+        System.out.println("gd");
     }
 
     void getboard() {
@@ -85,54 +86,50 @@ class MainGameBoard{
             System.out.print(square_bottom);
         }
     }
-    void Game(int a) {
-        if(dice == 0) {
-            y -= a;
-            if(y<0) {
-                rest = 0-y;
+    void Game() {
+        if (cnt2 == 0) {
+            y -= dice;
+            if (y < 0) {
+                rest = 0 - y;
                 y = 0;
                 x -= rest;
-                dice++;
-                System.out.println("("+x+")"+"("+y+")");
+                cnt2++;
             }
-        }else if(dice ==1) {
-            x -= a;
-            if(x<0) {
-                rest = 0-x;
-                x=0;
-                y+= rest;
-                dice++;
-                System.out.println("("+x+")"+"("+y+")");
+        } else if (cnt2 == 1) {
+            x -= dice;
+            if (x < 0) {
+                rest = 0 - x;
+                x = 0;
+                y += rest;
+                cnt2++;
             }
-        } else if(dice ==2) {
-            y += a;
-            if(y>3) {
-                rest = y-3;
+        } else if (cnt2 == 2) {
+            y += dice;
+            if (y > 3) {
+                rest = y - 3;
                 y = 3;
                 x += rest;
-                dice++;
-                System.out.println("("+x+")"+"("+y+")");
-                if(x>=3) {
+                cnt2++;
+                if (x >= 3) {
                     System.out.println("끝");
                 }
             }
         } else {
-            x+=a;
-            if(x>=3) {
+            x += dice;
+            if (x >= 3) {
                 System.out.println("끝");
             }
-
         }
         cnt++;
-        if(cnt%2 ==0) {
-            board[p.playerPosition[0]][p.playerPosition[1]] -=1 ;
-            board[x][y] +=1;
+        if (cnt % 2 == 0) {
+            board[p.playerPosition[0]][p.playerPosition[1]] -= 1;
+            board[x][y] += 1;
         } else {
-            board[p.playerPosition[0]][p.playerPosition[1]] -=2 ;
-            board[x][y] +=2;
+            board[p.playerPosition[0]][p.playerPosition[1]] -= 2;
+            board[x][y] += 2;
         }
-        p.playerPosition[0] = x;
         p.playerPosition[1] = y;
+        p.playerPosition[0] = x;
     }
 }
 class GamePlayer{
@@ -154,7 +151,7 @@ public class MainGame {
 
         GamePlayer player1 = new GamePlayer(); // 플레이어1 객체 생성
         GamePlayer player2 = new GamePlayer(); // 플레이어2 객체 생성
-        MainGameBoard b;
+        MainGameBoard b; // 게임판 객체 생성
         Scanner scanner = new Scanner(System.in);
         int MiniGameCount = -1;
 
@@ -171,11 +168,13 @@ public class MainGame {
             System.out.printf("%s의 턴!", player1.name);
             player1.dice = dice();
             b = new MainGameBoard(player1,player1.dice);
+            b.Game();
             b.getboard();
             System.out.printf("%s의 턴!", player2.name);
             player2.dice = dice();
             b = new MainGameBoard(player2,player2.dice);
-
+            b.Game();
+            b.getboard();
 //            if (isMiniGame) {
 //                miniGame(MiniGameCount++, player1.name, player2.name);
 //            } else if(isChance){
@@ -358,7 +357,7 @@ public class MainGame {
         }
         else if(miniGame[MiniGameCount]==2){
             System.out.println("고스트 게임을 시작합니다.");
-            Oriented.start(p1name, p2name);
+            oriented.start(p1name, p2name);
         }
         else if(miniGame[MiniGameCount]==3){
             System.out.println("블랙잭을 시작합니다.");
