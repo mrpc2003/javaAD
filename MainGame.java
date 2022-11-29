@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 class board{
     GamePlayer p;
@@ -131,7 +132,7 @@ class board{
 }
 class GamePlayer{
     String name; // 플레이어 이름
-    int dice, Score = 0;
+    int dice, Score = 0; // 주사위 값, 점수
     boolean isFinish = false; // 플레이어가 도착지점에 도착했는지 확인하는 변수
     boolean isWin; // 플레이어가 승리했는지 확인하는 변수
     int dicePosition; // 주사위를 던진 위치를 저장하는 변수
@@ -140,16 +141,14 @@ class GamePlayer{
     boolean isMiniGame = false; // 미니게임을 했는지 확인하는 변수
     boolean isChance = false; // 플레이어가 기회카드를 뽑았는지 확인하는 변수
 
-    int [][] playerPosition = new int[2][2];
+    int [][] playerPosition = new int[2][2]; // 플레이어의 위치를 저장하는 변수
 }
 
 public class MainGame {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        GamePlayer player1 = new GamePlayer();
-        GamePlayer player2 = new GamePlayer();
-        GamePlayer myself = new GamePlayer();
-
+        GamePlayer player1 = new GamePlayer(); // 플레이어1 객체 생성
+        GamePlayer player2 = new GamePlayer(); // 플레이어2 객체 생성
 
         Scanner scanner = new Scanner(System.in);
         int MiniGameCount = -1;
@@ -161,7 +160,7 @@ public class MainGame {
         player2.name = scanner.nextLine();
 
         System.out.println("게임을 시작합니다.");
-
+        Thread.sleep(1000); //1초 대기
 
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
@@ -171,7 +170,6 @@ public class MainGame {
                 miniGame(MiniGameCount++);
             } else if(isChance){
                 chance(MiniGameCount++, player1.Score, player2.Score, player1.name, player2.name, player1.isTurn, player2.isTurn,  player1.isBonus,  player2.isBonus);
-
             }  else {
                 //랜덤으로 3~5점 점수 획득
                 int randomscore = (int) (Math.random() * 3) + 3;
@@ -191,6 +189,7 @@ public class MainGame {
                 }
             }
         }
+
         if (player1.Score > player2.Score) {
             player1.isWin = true;
             System.out.println(player1.name + "의 승리!");
@@ -201,9 +200,14 @@ public class MainGame {
             System.out.println("무승부!");
         }
     }
-    public static void dice() {
+    public static void dice() throws InterruptedException {
         int dice = (int) (Math.random() * 3) + 1;
-        System.out.println("주사위를 굴려주세요.");
+        System.out.println("주사위를 굴립니다.");
+        for (int i = 3; i > 0; i--) { // 3초 카운트 다운
+            time(); // 1초 쉬는 메소드
+            System.out.print("."); // . 출력
+        }
+        time(); // 1초 쉬는 메소드
         System.out.println("주사위의 숫자는 " + dice + "입니다.");
         System.out.println(dice+"칸 이동합니다.");
     }
@@ -229,6 +233,7 @@ public class MainGame {
         boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
         if (isBonus){
             System.out.println("보너스 카드를 뽑았습니다.");
+            time();
             if (p1turn){
                 bonusScore(p1isBonus);
             } else if (p2turn){
@@ -249,8 +254,9 @@ public class MainGame {
             }
         }
     }
-    public static void scoreChange(String myself, String counterpart, int myselfscore, int counterpartscore) {
+    public static void scoreChange(String myself, String counterpart, int myselfscore, int counterpartscore) throws InterruptedException {
         System.out.println(myself+"와(과)"+counterpart+"의 점수가 변경되었습니다.");
+        time();
         //5점을 상대방으로부터 가져옴/줌(무작위), 만약 5점보다 적다면, 가지고 있는 점수 전부를 줌
 
         if (counterpartscore < 5) {
@@ -267,8 +273,9 @@ public class MainGame {
     public static void positionChange(String myself, String counterpart) {
         System.out.println(myself+"와(과)"+counterpart+"의 위치가 변경되었습니다.");
     }
-    public static void playerTurn(String myself) {
+    public static void playerTurn(String myself) throws InterruptedException {
         System.out.println(myself+"의 차례입니다.");
+        time();
         System.out.println("주사위를 굴립니다.");
         dice();
     }
@@ -297,6 +304,11 @@ public class MainGame {
     public static void miniGame(int MiniGameCount) throws IOException, InterruptedException {
 
         System.out.println("미니게임을 시작합니다.");
+        for (int i = 3; i > 0; i--) { // 3초 카운트 다운
+            time(); // 1초 쉬는 메소드
+            System.out.print("."); // . 출력
+        }
+        time(); // 1초 쉬는 메소드
         System.out.println("미니게임은 랜덤으로 실행됩니다.");
 
         // 4개의 미니게임 중 랜덤으로 선택
@@ -322,7 +334,6 @@ public class MainGame {
             }
         }
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
-
         if(miniGame[MiniGameCount]==1) {
             System.out.println("Yacht Dice 를 시작합니다.");
             YachtGame_Main.start();
@@ -337,13 +348,12 @@ public class MainGame {
             System.out.println("빙고게임을 시작합니다.");
         }
     }
-    public static void backward(String myself) {
-
+    public static void backward(String myself) throws InterruptedException {
         System.out.println("1칸 뒤로 이동합니다.");
         System.out.println(myself+"의 위치가 변경되었습니다.");
-
+        time();
     }
-
-
-
+    public static void time() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+    }
 }

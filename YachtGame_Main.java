@@ -75,45 +75,6 @@ public class YachtGame_Main {
 
 		}
 	}
-
-//	public static void main(String[] args) throws InterruptedException, IOException {
-//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // 입력을 받기 위한 BufferedReader
-//		ScoreBoard sb = new ScoreBoard(); // 점수판
-//		String p1; // 플레이어1의 이름
-//		String p2; // 플레이어2의 이름
-//		String ans = ""; // 플레이어가 입력한 답
-//		String temp = ""; // 플레이어가 입력한 답을 임시로 저장
-//		int[] dice = new int[5]; // 주사위 5개를 저장할 배열
-//		System.out.println("-Yacht Dice-"); // 게임 이름 출력
-//		p1 = p1player.getP1Name(); // 플레이어1의 이름 가져오기
-//		p2 = p2player.getP2Name(); // 플레이어2의 이름 가져오기
-//		System.out.println(p1 + "님과 " + p2 + "님의 Yacht Dice를 시작합니다."); // 플레이어1과 플레이어2의 이름 출력
-//		for (int i = 3; i > 0; i--) { // 3초 카운트 다운
-//			time(); // 1초 쉬는 메소드
-//			System.out.print("."); // . 출력
-//		}
-//		time(); // 1초 쉬는 메소드
-//		System.out.println("game Start!"); // 게임 시작 출력
-//		time(); // 1초 쉬는 메소드
-//		while (true) { // 무한 반복
-//			System.out.println(p1 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어1의 차례 출력
-//			rollDiceAll(dice); // 주사위 5개를 던지는 메소드
-//			printRoll(dice); // 주사위 5개를 출력하는 메소드
-//			time(); // 1초 쉬는 메소드
-//			dice = reRollDice(dice); // 주사위를 재배치하는 메소드
-//			p1inputScore(dice, sb); // 플레이어1의 점수를 입력하는 메소드
-//			time(); // 1초 쉬는 메소드
-//			System.out.println(p2 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어2의 차례 출력
-//			rollDiceAll(dice); // 주사위 5개를 던지는 메소드
-//			printRoll(dice); // 주사위 5개를 출력하는 메소드
-//			time(); // 1초 쉬는 메소드
-//			dice = reRollDice(dice); // 주사위를 재배치하는 메소드
-//			p2inputScore(dice, sb); // 플레이어2의 점수를 입력하는 메소드
-//			gameOverCheck(p1, p2, sb); // 게임이 끝났는지 확인하는 메소드
-//
-//		}
-//	}
-
 	private static int genRandom() {
 		int result = 0;
 		result = (int) (Math.random() * 6) + 1;
