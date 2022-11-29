@@ -8,8 +8,10 @@ import java.util.concurrent.TimeUnit;
 class MainGameBoard{
     GamePlayer p ;
     static int [][] board = new int[4][4];
+
     int x =3, y=3;
-    int rest,cnt,cnt2=0, dice;
+    static int cnt ;
+    int rest,cnt2=0, dice;
     String square_up = "┏━━━━━┓";
     String square_bottom = "┗━━━━━┛";
     String square_height_m = "┃" + "  M  "+ "┃" ;
@@ -22,21 +24,21 @@ class MainGameBoard{
     MainGameBoard(GamePlayer p, int dice){
         this.p = p;
         this.dice = dice;
-        System.out.println("gd");
     }
 
     void getboard() {
         p = new GamePlayer();
+
         for(int i=0; i<4; i++) {
             System.out.print(square_up);
         }
-        System.out.println("");
+        System.out.println();
         // 고쳐야하는 부분
 
         System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
         System.out.print(board[0][1]==1 ? square_height_Player1 : board[0][1]==2? square_height_Player2 :board[0][1]==3? square_height_2Player :square_height_c);
-        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height);
-        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
+        System.out.print(board[0][2]==1 ? square_height_Player1 : board[0][2]==2? square_height_Player2 :board[0][2]==3? square_height_2Player :square_height);
+        System.out.println(board[0][3]==1 ? square_height_Player1 : board[0][3]==2? square_height_Player2 :board[0][3]==3? square_height_2Player :square_height_m);
 
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
@@ -47,12 +49,12 @@ class MainGameBoard{
             System.out.print("       ");
         }
         System.out.println(square_up);
-        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height);
+        System.out.print(board[1][0]==1 ? square_height_Player1 : board[1][0]==2? square_height_Player2 :board[1][0]==3? square_height_2Player :square_height);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
 
-        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
+        System.out.println(board[1][3]==1 ? square_height_Player1 : board[1][3]==2? square_height_Player2 :board[1][3]==3? square_height_2Player :square_height_c);
         System.out.print(square_bottom);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
@@ -63,11 +65,11 @@ class MainGameBoard{
             System.out.print("       ");
         }
         System.out.println(square_up);
-        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
+        System.out.print(board[2][0]==1 ? square_height_Player1 : board[2][0]==2? square_height_Player2 :board[2][0]==3? square_height_2Player :square_height_c);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
-        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
+        System.out.println(board[2][3]==1 ? square_height_Player1 : board[2][3]==2? square_height_Player2 :board[2][3]==3? square_height_2Player :square_height_c);
         System.out.print(square_bottom);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
@@ -77,20 +79,27 @@ class MainGameBoard{
             System.out.print(square_up);
         }
         System.out.println("");
-        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
-        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height);
-        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
-        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_last);
+        System.out.print(board[3][0]==1 ? square_height_Player1 : (board[3][0]==2? square_height_Player2 :(board[3][0]==3? square_height_2Player :square_height_m)));
+        System.out.print(board[3][1]==1 ? square_height_Player1 : (board[3][1]==2? square_height_Player2 :(board[3][1]==3? square_height_2Player :square_height)));
+        System.out.print(board[3][2]==1 ? square_height_Player1 : (board[3][2]==2? square_height_Player2 :(board[3][2]==3? square_height_2Player :square_height_c)));
+        System.out.println(board[3][3]==1 ? square_height_Player1 : (board[3][3]==2? square_height_Player2 :(board[3][3]==3? square_height_2Player :square_height_last)));
 
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
         }
     }
     void Game() {
+        if(cnt ==0){
+            board[3][3] =3;
+
+        } else{
+            x = p.playerPosition[0];
+            y= p.playerPosition[1];
+        }
         if (cnt2 == 0) {
             y -= dice;
             if (y < 0) {
-                rest = 0 - y;
+                rest = -y;
                 y = 0;
                 x -= rest;
                 cnt2++;
@@ -98,7 +107,7 @@ class MainGameBoard{
         } else if (cnt2 == 1) {
             x -= dice;
             if (x < 0) {
-                rest = 0 - x;
+                rest = -x;
                 x = 0;
                 y += rest;
                 cnt2++;
@@ -117,6 +126,7 @@ class MainGameBoard{
         } else {
             x += dice;
             if (x >= 3) {
+                x =3;
                 System.out.println("끝");
             }
         }
@@ -143,7 +153,10 @@ class GamePlayer{
     boolean isMiniGame = false; // 미니게임을 했는지 확인하는 변수
     boolean isChance = false; // 플레이어가 기회카드를 뽑았는지 확인하는 변수
 
-    int [] playerPosition = new int[2]; // 플레이어의 위치를 저장하는 변수
+    int [] playerPosition = {3,3}; // 플레이어의 위치를 저장하는 변수
+
+
+
 }
 
 public class MainGame {
