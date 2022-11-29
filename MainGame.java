@@ -167,7 +167,7 @@ public class MainGame {
 
             System.out.println("게임판을 출력합니다.");
             if (isMiniGame) {
-                miniGame(MiniGameCount++);
+                miniGame(MiniGameCount++, player1.name, player2.name);
             } else if(isChance){
                 chance(MiniGameCount++, player1.Score, player2.Score, player1.name, player2.name, player1.isTurn, player2.isTurn,  player1.isBonus,  player2.isBonus);
             }  else {
@@ -241,7 +241,7 @@ public class MainGame {
             }
 
         } if (isMiniGame){
-            miniGame(MiniGameCount);
+            miniGame(MiniGameCount, p1name, p2name);
         } if (isScoreChange){
             scoreChange(p1name, p2name, p1Score, p2Score);
         } if (isPositionChange){
@@ -301,7 +301,7 @@ public class MainGame {
         System.out.println("이후 도착하는 1개의 미니게임 점수가 2배로 증가합니다.");
         bonus = true;
     }
-    public static void miniGame(int MiniGameCount) throws IOException, InterruptedException {
+    public static void miniGame(int MiniGameCount, String p1name, String p2name) throws IOException, InterruptedException {
 
         System.out.println("미니게임을 시작합니다.");
         for (int i = 3; i > 0; i--) { // 3초 카운트 다운
@@ -336,7 +336,14 @@ public class MainGame {
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
         if(miniGame[MiniGameCount]==1) {
             System.out.println("Yacht Dice 를 시작합니다.");
-            YachtGame_Main.start();
+            YachtGame_Main.start(p1name, p2name);
+            if (p1player.p1isWin) {
+                System.out.println(p1name + "님이 승리하셨습니다.");
+            } else if (p2player.p2isWin) {
+                System.out.println(p2name + "님이 승리하셨습니다.");
+            } else {
+                System.out.println("무승부입니다.");
+            }
         }
         else if(miniGame[MiniGameCount]==2){
             System.out.println("고스트 게임을 시작합니다.");

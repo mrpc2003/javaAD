@@ -10,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 class mainGameConnect{
 	static String p1 = "Player1"; // 플레이어 1 이름
 	static String p2 = "Player2"; // 플레이어 2 이름
-	public void setP1name(String p1name){
+	public static void setP1name(String p1name){
 		p1 = p1name;
 	} // 플레이어 1 이름 설정
-	public void setP2name(String p2name){
+	public static void setP2name(String p2name){
 		p2 = p2name;
 	} // 플레이어 2 이름 설정
 	public static String getP1Name(){
@@ -38,17 +38,17 @@ class p2player extends mainGameConnect{ // 플레이어 2 클래스
 }
 
 public class YachtGame_Main {
-	public static void start() throws InterruptedException, IOException {
+	public static void start(String p1name, String p2name) throws InterruptedException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // 입력을 받기 위한 BufferedReader
 		ScoreBoard sb = new ScoreBoard(); // 점수판
-		String p1; // 플레이어1의 이름
-		String p2; // 플레이어2의 이름
+		p1player p1 = new p1player(); // 플레이어 1
+		p2player p2 = new p2player(); // 플레이어 2
+		mainGameConnect.setP1name(p1name); // 플레이어 1 이름 설정
+		mainGameConnect.setP2name(p2name); // 플레이어 2 이름 설정
 		String ans = ""; // 플레이어가 입력한 답
 		String temp = ""; // 플레이어가 입력한 답을 임시로 저장
 		int[] dice = new int[5]; // 주사위 5개를 저장할 배열
 		System.out.println("-Yacht Dice-"); // 게임 이름 출력
-		p1 = p1player.getP1Name(); // 플레이어1의 이름 가져오기
-		p2 = p2player.getP2Name(); // 플레이어2의 이름 가져오기
 		System.out.println(p1 + "님과 " + p2 + "님의 Yacht Dice를 시작합니다."); // 플레이어1과 플레이어2의 이름 출력
 		for (int i = 3; i > 0; i--) { // 3초 카운트 다운
 			time(); // 1초 쉬는 메소드
@@ -71,7 +71,7 @@ public class YachtGame_Main {
 			time(); // 1초 쉬는 메소드
 			dice = reRollDice(dice); // 주사위를 재배치하는 메소드
 			p2inputScore(dice, sb); // 플레이어2의 점수를 입력하는 메소드
-			gameOverCheck(p1, p2, sb); // 게임이 끝났는지 확인하는 메소드
+			gameOverCheck(p1player.getP1Name(), p2player.getP2Name(), sb); // 게임이 끝났는지 확인하는 메소드
 
 		}
 	}
@@ -784,13 +784,12 @@ public class YachtGame_Main {
 			System.out.println("게임이 끝났습니다."); // 게임이 끝났다는 출력문
 			if (sb.p1Total > sb.p2Total) { // 만약 p1Total이 p2Total보다 크다면
 				System.out.println(p1 + "의 승리입니다."); // p1의 승리라는 출력문
-				System.exit(0); // 프로그램 종료
+				p1player.p1isWin = true; // p1Result() 메소드 호출
 			} else if (sb.p1Total < sb.p2Total) { // 만약 p1Total이 p2Total보다 작다면
 				System.out.println(p2 + "의 승리입니다."); // p2의 승리라는 출력문
-				System.exit(0); // 프로그램 종료
+				p2player.p2isWin = true; // p1Result() 메소드 호출
 			} else { // 만약 두 점수가 같다면
 				System.out.println("무승부입니다."); // 무승부라는 출력문
-				System.exit(0); // 프로그램 종료
 			}
 		}
 	}
