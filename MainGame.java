@@ -353,6 +353,14 @@ public class MainGame {
         }
         else if(miniGame[MiniGameCount]==4){
             System.out.println("빙고게임을 시작합니다.");
+            BM.Bingo(p1name, p2name);
+            if (p1player.p1isWin) {
+                System.out.println(p1name + "님이 승리하셨습니다.");
+            } else if (p2player.p2isWin) {
+                System.out.println(p2name + "님이 승리하셨습니다.");
+            } else {
+                System.out.println("무승부입니다.");
+            }
         }
     }
     public static void backward(String myself) throws InterruptedException {

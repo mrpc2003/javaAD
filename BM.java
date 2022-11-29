@@ -3,8 +3,7 @@ package AD_Project;
 import java.util.Scanner;
 
 public class BM {
-
-	public static void main(String[] args) {
+	public static void Bingo(String p1name, String p2name) {
 		final int SIZE = 5;
 		int x = 0, y = 0, num = 0;
 		int totalCnt1 = 0;
@@ -118,7 +117,7 @@ public class BM {
 				totalCnt2++;
 			if (totalCnt1 >= 1 || totalCnt2 >= 1) {
 				if (totalCnt1 >= 1)
-					System.out.println("    Player 1 ½Â¸®!");
+					System.out.println("    "+p1name+"1 ½Â¸®!");
 				else if (totalCnt2 >= 1)
 					System.out.println("    Player 2 ½Â¸®!");
 				// ÃÖÁ¾ºù°íÆÇ Ãâ·Â
