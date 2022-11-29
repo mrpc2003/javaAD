@@ -362,7 +362,7 @@ public class MainGame {
         }
         else if(miniGame[MiniGameCount]==3){
             System.out.println("블랙잭을 시작합니다.");
-
+            blackjack_withclass.Bstart(p1name, p2name);
         }
         else if(miniGame[MiniGameCount]==4){
             System.out.println("빙고게임을 시작합니다.");
