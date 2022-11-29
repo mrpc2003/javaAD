@@ -21,13 +21,12 @@ class MainGameBoard{
     String square_height_Player2 = "┃" + "  ○  "+ "┃" ;
     String square_height_2Player = "┃" + " ●○  "+ "┃" ;
     String square_height = "┃" + "     "+ "┃" ;
-    MainGameBoard(GamePlayer p, int dice){
+    MainGameBoard(GamePlayer p){
         this.p = p;
-        this.dice = dice;
     }
 
     void getboard() {
-        p = new GamePlayer();
+//        p = new GamePlayer();
 
         for(int i=0; i<4; i++) {
             System.out.print(square_up);
@@ -88,7 +87,8 @@ class MainGameBoard{
             System.out.print(square_bottom);
         }
     }
-    void Game() {
+    void Game(int dice) {
+
         if(cnt ==0){
             board[3][3] =3;
 
@@ -176,18 +176,18 @@ public class MainGame {
         System.out.println("게임을 시작합니다.");
         Thread.sleep(1000); //1초 대기
         System.out.println("게임판을 출력합니다.");
+        MainGameBoard b1 = new MainGameBoard(player1);
+        MainGameBoard b2 = new MainGameBoard(player2);
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
             System.out.printf("%s의 턴!", player1.name);
             player1.dice = dice();
-            b = new MainGameBoard(player1,player1.dice);
-            b.Game();
-            b.getboard();
+            b1.Game(player1.dice);
+            b1.getboard();
             System.out.printf("%s의 턴!", player2.name);
             player2.dice = dice();
-            b = new MainGameBoard(player2,player2.dice);
-            b.Game();
-            b.getboard();
+            b2.Game(player2.dice);
+            b2.getboard();
 //            if (isMiniGame) {
 //                miniGame(MiniGameCount++, player1.name, player2.name);
 //            } else if(isChance){
