@@ -5,14 +5,11 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-class board{
-    GamePlayer p;
-    board(GamePlayer p){
-        this.p = p;
-    }
-    int [][] board = new int[4][4];
+class MainGameBoard{
+    GamePlayer p ;
+    static int [][] board = new int[4][4];
     int x =3, y=3;
-    int rest,cnt, cnt2;
+    int rest,cnt, dice;
     String square_up = "┏━━━━━┓";
     String square_bottom = "┗━━━━━┛";
     String square_height_m = "┃" + "  M  "+ "┃" ;
@@ -22,18 +19,24 @@ class board{
     String square_height_Player2 = "┃" + "  ○  "+ "┃" ;
     String square_height_2Player = "┃" + " ●○  "+ "┃" ;
     String square_height = "┃" + "     "+ "┃" ;
+    MainGameBoard(GamePlayer p, int dice){
+        this.p = p;
+        this.dice = dice;
+    }
 
     void getboard() {
+        p = new GamePlayer();
         for(int i=0; i<4; i++) {
             System.out.print(square_up);
         }
         System.out.println("");
         // 고쳐야하는 부분
-        System.out.print(square_height_m);
-        System.out.print(square_height_c);
-        System.out.print(square_height);
-        System.out.print(square_height_m);
-        System.out.println("");
+
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
+        System.out.print(board[0][1]==1 ? square_height_Player1 : board[0][1]==2? square_height_Player2 :board[0][1]==3? square_height_2Player :square_height_c);
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height);
+        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
+
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
         }
@@ -42,71 +45,72 @@ class board{
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
-        System.out.print(square_up);
-        System.out.print("\n"+square_height);
+        System.out.println(square_up);
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
-        System.out.print(square_height_c);
-        System.out.print("\n"+ square_bottom);
-        for(int i =0; i<2; i++) {
-            System.out.print("       ");
-        }
+
+        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
         System.out.print(square_bottom);
-        System.out.print("\n" + square_up);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
+        System.out.println(square_bottom);
         System.out.print(square_up);
-        System.out.print("\n"+square_height_c);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
-        System.out.print(square_height_c);
-        System.out.print("\n"+ square_bottom);
+        System.out.println(square_up);
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
-        System.out.print(square_bottom +"\n");
+        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
+        System.out.print(square_bottom);
+        for(int i =0; i<2; i++) {
+            System.out.print("       ");
+        }
+        System.out.println(square_bottom);
         for(int i=0; i<4; i++) {
             System.out.print(square_up);
         }
         System.out.println("");
-        System.out.print(square_height_m);
-        System.out.print(square_height);
-        System.out.print(square_height_c);
-        System.out.print(square_height_last);
-        System.out.println("");
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height);
+        System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_c);
+        System.out.println(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_last);
+
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
         }
     }
     void Game(int a) {
-        if(cnt == 0) {
+        if(dice == 0) {
             y -= a;
             if(y<0) {
                 rest = 0-y;
                 y = 0;
                 x -= rest;
-                cnt++;
+                dice++;
                 System.out.println("("+x+")"+"("+y+")");
             }
-        }else if(cnt ==1) {
+        }else if(dice ==1) {
             x -= a;
             if(x<0) {
                 rest = 0-x;
                 x=0;
                 y+= rest;
-                cnt++;
+                dice++;
                 System.out.println("("+x+")"+"("+y+")");
             }
-        } else if(cnt ==2) {
+        } else if(dice ==2) {
             y += a;
             if(y>3) {
                 rest = y-3;
                 y = 3;
                 x += rest;
-                cnt++;
+                dice++;
                 System.out.println("("+x+")"+"("+y+")");
                 if(x>=3) {
                     System.out.println("끝");
@@ -117,17 +121,18 @@ class board{
             if(x>=3) {
                 System.out.println("끝");
             }
+
         }
-        cnt2++;
-        if(cnt2%2==0) {
-            board[p.playerPosition[cnt2%2][0]][p.playerPosition[cnt2%2][1]] -=1 ;
+        cnt++;
+        if(cnt%2 ==0) {
+            board[p.playerPosition[0]][p.playerPosition[1]] -=1 ;
             board[x][y] +=1;
         } else {
-            board[p.playerPosition[cnt2%2][0]][p.playerPosition[cnt2%2][1]] -=2 ;
+            board[p.playerPosition[0]][p.playerPosition[1]] -=2 ;
             board[x][y] +=2;
         }
-        p.playerPosition[cnt2%2][0] = x;
-        p.playerPosition[cnt2%2][1] = y;
+        p.playerPosition[0] = x;
+        p.playerPosition[1] = y;
     }
 }
 class GamePlayer{
@@ -141,7 +146,7 @@ class GamePlayer{
     boolean isMiniGame = false; // 미니게임을 했는지 확인하는 변수
     boolean isChance = false; // 플레이어가 기회카드를 뽑았는지 확인하는 변수
 
-    int [][] playerPosition = new int[2][2]; // 플레이어의 위치를 저장하는 변수
+    int [] playerPosition = new int[2]; // 플레이어의 위치를 저장하는 변수
 }
 
 public class MainGame {
@@ -149,7 +154,7 @@ public class MainGame {
 
         GamePlayer player1 = new GamePlayer(); // 플레이어1 객체 생성
         GamePlayer player2 = new GamePlayer(); // 플레이어2 객체 생성
-
+        MainGameBoard b;
         Scanner scanner = new Scanner(System.in);
         int MiniGameCount = -1;
 
@@ -158,36 +163,41 @@ public class MainGame {
 
         System.out.println("Player 2의 이름을 입력해주세요: ");
         player2.name = scanner.nextLine();
-
         System.out.println("게임을 시작합니다.");
         Thread.sleep(1000); //1초 대기
-
+        System.out.println("게임판을 출력합니다.");
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
+            System.out.printf("%s의 턴!", player1.name);
+            player1.dice = dice();
+            b = new MainGameBoard(player1,player1.dice);
+            b.getboard();
+            System.out.printf("%s의 턴!", player2.name);
+            player2.dice = dice();
+            b = new MainGameBoard(player2,player2.dice);
 
-            System.out.println("게임판을 출력합니다.");
-            if (isMiniGame) {
-                miniGame(MiniGameCount++, player1.name, player2.name);
-            } else if(isChance){
-                chance(MiniGameCount++, player1.Score, player2.Score, player1.name, player2.name, player1.isTurn, player2.isTurn,  player1.isBonus,  player2.isBonus);
-            }  else {
-                //랜덤으로 3~5점 점수 획득
-                int randomscore = (int) (Math.random() * 3) + 3;
-                System.out.println("점수를 획득했습니다.");
-                if (player1.isTurn) {
-                    System.out.println("획득한 점수: "+randomscore);
-                    player1.Score += randomscore;
-                    System.out.println(player1.name + "의 점수: " + player1.Score);
-                    player1.isTurn = false;
-                    player2.isTurn = true;
-                } else if (player2.isTurn) {
-                    System.out.println("획득한 점수: "+randomscore);
-                    player2.Score += randomscore;
-                    System.out.println(player2.name + "의 점수: " + player2.Score);
-                    player1.isTurn = true;
-                    player2.isTurn = false;
-                }
-            }
+//            if (isMiniGame) {
+//                miniGame(MiniGameCount++, player1.name, player2.name);
+//            } else if(isChance){
+//                chance(MiniGameCount++, player1.Score, player2.Score, player1.name, player2.name, player1.isTurn, player2.isTurn,  player1.isBonus,  player2.isBonus);
+//            }  else {
+//                //랜덤으로 3~5점 점수 획득
+//                int randomscore = (int) (Math.random() * 3) + 3;
+//                System.out.println("점수를 획득했습니다.");
+//                if (player1.isTurn) {
+//                    System.out.println("획득한 점수: "+randomscore);
+//                    player1.Score += randomscore;
+//                    System.out.println(player1.name + "의 점수: " + player1.Score);
+//                    player1.isTurn = false;
+//                    player2.isTurn = true;
+//                } else if (player2.isTurn) {
+//                    System.out.println("획득한 점수: "+randomscore);
+//                    player2.Score += randomscore;
+//                    System.out.println(player2.name + "의 점수: " + player2.Score);
+//                    player1.isTurn = true;
+//                    player2.isTurn = false;
+//                }
+//            }
         }
 
         if (player1.Score > player2.Score) {
@@ -200,7 +210,7 @@ public class MainGame {
             System.out.println("무승부!");
         }
     }
-    public static void dice() throws InterruptedException {
+    public static int dice() throws InterruptedException {
         int dice = (int) (Math.random() * 3) + 1;
         System.out.println("주사위를 굴립니다.");
         for (int i = 3; i > 0; i--) { // 3초 카운트 다운
@@ -210,6 +220,7 @@ public class MainGame {
         time(); // 1초 쉬는 메소드
         System.out.println("주사위의 숫자는 " + dice + "입니다.");
         System.out.println(dice+"칸 이동합니다.");
+        return dice;
     }
     public static int winnerScoreUp(boolean win, boolean bonus) {
         if (win) { // 미니게임 승리
@@ -347,16 +358,18 @@ public class MainGame {
         }
         else if(miniGame[MiniGameCount]==2){
             System.out.println("고스트 게임을 시작합니다.");
+            Oriented.start(p1name, p2name);
         }
         else if(miniGame[MiniGameCount]==3){
             System.out.println("블랙잭을 시작합니다.");
+
         }
         else if(miniGame[MiniGameCount]==4){
             System.out.println("빙고게임을 시작합니다.");
-            BM.Bingo(p1name, p2name);
-            if (p1player.p1isWin) {
+            BM.start(p1name, p2name);
+            if (BM.p1isWin) {
                 System.out.println(p1name + "님이 승리하셨습니다.");
-            } else if (p2player.p2isWin) {
+            } else if (BM.p2isWin) {
                 System.out.println(p2name + "님이 승리하셨습니다.");
             } else {
                 System.out.println("무승부입니다.");

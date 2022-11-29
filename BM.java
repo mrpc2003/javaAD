@@ -1,9 +1,14 @@
 package AD_Project;
 
 import java.util.Scanner;
+import java.util.Stack;
 
 public class BM {
-	public static void Bingo(String p1name, String p2name) {
+	public static boolean p1isWin = false;
+	public static boolean p2isWin = false;
+
+
+	public static void start(String p1name, String p2name) {
 		final int SIZE = 5;
 		int x = 0, y = 0, num = 0;
 		int totalCnt1 = 0;
@@ -12,8 +17,6 @@ public class BM {
 		int player = 1;
 		int bingoCnt = SIZE * SIZE;
 
-		boolean p1isWin = false;
-		boolean p2isWin = false;
 
 		int[][] check = new int[SIZE][SIZE];
 		int[][] bingo = new int[SIZE][SIZE];
@@ -125,7 +128,7 @@ public class BM {
 				}
 				else if (totalCnt2 >= 1) {
 					System.out.println("    " + p2name + " 승리!");
-					p1isWin = true;
+					p2isWin = true;
 				}
 				// 최종빙고판 출력
 				for (int i = 0; i < SIZE; i++) {
