@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 class MainGameBoard{
     GamePlayer p ;
+    static boolean start = false;
     static int [][] board = new int[4][4];
 
     int x =3, y=3;
@@ -138,6 +139,11 @@ class MainGameBoard{
             board[p.playerPosition[0]][p.playerPosition[1]] -= 2;
             board[x][y] += 2;
         }
+
+        if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
+            start = true;
+        }
+
         p.playerPosition[1] = y;
         p.playerPosition[0] = x;
     }
@@ -188,7 +194,9 @@ public class MainGame {
             player2.dice = dice();
             b2.Game(player2.dice);
             b2.getboard();
-//            if (isMiniGame) {
+            
+//            if ()   // 메소드로 묶기
+//            if (player1.isMiniGame||player2.isMiniGame) {
 //                miniGame(MiniGameCount++, player1.name, player2.name);
 //            } else if(isChance){
 //                chance(MiniGameCount++, player1.Score, player2.Score, player1.name, player2.name, player1.isTurn, player2.isTurn,  player1.isBonus,  player2.isBonus);
@@ -211,6 +219,8 @@ public class MainGame {
 //                }
 //            }
         }
+
+
 
         if (player1.Score > player2.Score) {
             player1.isWin = true;
