@@ -197,32 +197,6 @@ public class MainGame {
             playerTurn(player1, player2,b1);
             playerTurn(player2, player1,b2);
 
-//            if ()   // ¸Þ¼Òµå·Î ¹­±â
-            if (!player1.isMiniGame || !player2.isMiniGame) {
-                miniGame(player1.miniGameCounter, player1, player2);
-                calculateMiniGameScore(player1, player2);
-            }
-//            else if(isChance){
-//                chance(MiniGameCount++, player1, player2);
-//            }
-            else {
-                //·£´ýÀ¸·Î 3~5Á¡ Á¡¼ö È¹µæ
-                int randomscore = (int) (Math.random() * 3) + 3;
-                System.out.println("Á¡¼ö¸¦ È¹µæÇß½À´Ï´Ù.");
-                if (player1.isTurn) {
-                    System.out.println("È¹µæÇÑ Á¡¼ö: "+randomscore);
-                    player1.Score += randomscore;
-                    System.out.println(player1.name + "ÀÇ Á¡¼ö: " + player1.Score);
-                    player1.isTurn = false;
-                    player2.isTurn = true;
-                } else if (player2.isTurn) {
-                    System.out.println("È¹µæÇÑ Á¡¼ö: "+randomscore);
-                    player2.Score += randomscore;
-                    System.out.println(player2.name + "ÀÇ Á¡¼ö: " + player2.Score);
-                    player1.isTurn = true;
-                    player2.isTurn = false;
-                }
-            }
         }
 
     }
@@ -230,11 +204,8 @@ public class MainGame {
         System.out.println(myself.name+"ÀÇ ÅÏ ÀÔ´Ï´Ù.");
         myself.isTurn = true;
         time();
-
-//        player.dice = dice();
         board.Game(dice());
         board.getboard();
-        myself.isTurn = false;
 
         //ÀÌºÎºÐ ±¸ÇöÇØ¾ßÇÔ
         if (myself.isChance) {
@@ -252,6 +223,16 @@ public class MainGame {
             } else {
                 System.out.println("¹«½ÂºÎ!");
             }
+        } else {
+            int randomscore = (int) (Math.random() * 3) + 3;
+            System.out.println("Á¡¼ö¸¦ È¹µæÇß½À´Ï´Ù.");
+
+                System.out.println("È¹µæÇÑ Á¡¼ö: "+randomscore);
+                myself.Score += randomscore;
+                System.out.println(myself.name + "ÀÇ Á¡¼ö: " + myself.Score);
+                myself.isTurn = false;
+                counterPart.isTurn = true;
+
         }
     }
 
