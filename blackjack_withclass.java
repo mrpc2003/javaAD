@@ -8,8 +8,9 @@ public class blackjack_withclass
 {
 	public static void Bstart(String p1name, String p2name) throws InterruptedException, IOException
 	{
-
-		Game blackjack = new Game(p1name, p2name);
+		String p1_name = p1name;
+		String p2_name = p2name;
+		Game blackjack = new Game(p1_name, p2_name);
 
 		blackjack.init();	// ∞‘¿” √≥¿Ωø° «—π¯∏∏ Ω««‡«œ¥¬ ≥ªøÎ Ω««‡
 
@@ -70,13 +71,10 @@ class Player extends Actor
 	private String name;		// «√∑π¿ÃæÓ¿« ¿Ã∏ß
 
 
-	Player(String name)
-	{
-		this.name = name;
-	}
+	Player()	{}
 
 	String getName()				{ return this.name; }
-
+	void setName(String name)		{ this.name = name; }
 	int getCoin()					{ return this.coin; }
 	void setCoin(int coin)			{ this.coin = coin;	}
 
@@ -108,11 +106,19 @@ class Game  								//¿¸√º ∞‘¿” ∞¸«“
 	public static boolean p2win = false;
 	String Bp1name;
 	String Bp2name;
+<<<<<<< Updated upstream
 	Player p1 = new Player(Bp1name);			// ¿Ã∏ß∞˙ «‘≤≤ p1 ¡ˆ¡§ (∏ﬁ¿Œ ∞‘¿”ø°º≠¿« ¿Ã∏ß πﬁæ∆ø¿µµ∑œ)
 	Player p2 = new Player(Bp2name);			// ¿Ã∏ß∞˙ «‘≤≤ p2 ¡ˆ¡§
 	Dealer dealer = new Dealer();			// µÙ∑Ø ª˝º∫
 	CardDeck carddeck = new CardDeck();		// ¿¸√º ƒ´µÂ µ¶ ª˝º∫
 	int playCount = 0;						// ∏Ó ∂ÛøÓµÂ µπ¡ˆ ¡§«œ¥¬ ∫Øºˆ
+=======
+	Player p1 = new Player();				// p1 ÏßÄÏ†ï (Î©îÏù∏ Í≤åÏûÑÏóêÏÑúÏùò Ïù¥Î¶Ñ Î∞õÏïÑÏò§ÎèÑÎ°ù)
+	Player p2 = new Player();				// p2 ÏßÄÏ†ï
+	Dealer dealer = new Dealer();			// ÎîúÎü¨ ÏÉùÏÑ±
+	CardDeck carddeck = new CardDeck();		// Ï†ÑÏ≤¥ Ïπ¥Îìú Îç± ÏÉùÏÑ±
+	int playCount = 0;						// Î™á ÎùºÏö¥Îìú ÎèåÏßÄ Ï†ïÌïòÎäî Î≥ÄÏàò
+>>>>>>> Stashed changes
 
 	Game(String p1name, String p2name)
 	{
@@ -123,9 +129,15 @@ class Game  								//¿¸√º ∞‘¿” ∞¸«“
 	// ----------------------------------------------- ∞‘¿” Ω««‡ ∫Œ∫– ->
 	public void init() throws InterruptedException, IOException
 	{
+		p1.setName(Bp1name);				// Ïù¥Î¶Ñ ÏÉùÏÑ±
+		p2.setName(Bp2name);
 		playCount = 5;
 		p1.setCoin(1000);
+<<<<<<< Updated upstream
 		p2.setCoin(1000);					//«√∑π¿ÃæÓ µ∑
+=======
+		p2.setCoin(1000);					// ÌîåÎ†àÏù¥Ïñ¥ Îèà
+>>>>>>> Stashed changes
 		MiniGameStart();
 		//√‚∑¬ ∏Ó∞≥ «ÿº≠ ≤ŸπÃ±‚(≈∏¿Ã∆≤, ∑Í º≥∏Ì, µÓµÓ)
 	}
