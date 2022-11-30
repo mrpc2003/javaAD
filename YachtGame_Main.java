@@ -43,8 +43,8 @@ public class YachtGame_Main {
 		ScoreBoard sb = new ScoreBoard(); // 점수판
 		p1player p1 = new p1player(); // 플레이어 1
 		p2player p2 = new p2player(); // 플레이어 2
-		mainGameConnect.setP1name(p1name.toString()); // 플레이어 1 이름 설정
-		mainGameConnect.setP2name(p2name.toString()); // 플레이어 2 이름 설정
+		mainGameConnect.setP1name(p1name); // 플레이어 1 이름 설정
+		mainGameConnect.setP2name(p2name); // 플레이어 2 이름 설정
 		String ans = ""; // 플레이어가 입력한 답
 		String temp = ""; // 플레이어가 입력한 답을 임시로 저장
 		int[] dice = new int[5]; // 주사위 5개를 저장할 배열
@@ -58,14 +58,14 @@ public class YachtGame_Main {
 		System.out.println("game Start!"); // 게임 시작 출력
 		time(); // 1초 쉬는 메소드
 		while (true) { // 무한 반복
-			System.out.println(p1 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어1의 차례 출력
+			System.out.println(p1player.p1 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어1의 차례 출력
 			rollDiceAll(dice); // 주사위 5개를 던지는 메소드
 			printRoll(dice); // 주사위 5개를 출력하는 메소드
 			time(); // 1초 쉬는 메소드
 			dice = reRollDice(dice); // 주사위를 재배치하는 메소드
 			p1inputScore(dice, sb); // 플레이어1의 점수를 입력하는 메소드
 			time(); // 1초 쉬는 메소드
-			System.out.println(p2 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어2의 차례 출력
+			System.out.println(p2player.p2 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어2의 차례 출력
 			rollDiceAll(dice); // 주사위 5개를 던지는 메소드
 			printRoll(dice); // 주사위 5개를 출력하는 메소드
 			time(); // 1초 쉬는 메소드
@@ -783,10 +783,10 @@ public class YachtGame_Main {
 		if (sb.gameOverCheck()) { // 만약 gameOverCheck() 메소드가 true를 반환한다면
 			System.out.println("게임이 끝났습니다."); // 게임이 끝났다는 출력문
 			if (sb.p1Total > sb.p2Total) { // 만약 p1Total이 p2Total보다 크다면
-				System.out.println(p1 + "의 승리입니다."); // p1의 승리라는 출력문
+				System.out.println(p1player.p1 + "의 승리입니다."); // p1의 승리라는 출력문
 				p1player.p1isWin = true; // p1Result() 메소드 호출
 			} else if (sb.p1Total < sb.p2Total) { // 만약 p1Total이 p2Total보다 작다면
-				System.out.println(p2 + "의 승리입니다."); // p2의 승리라는 출력문
+				System.out.println(p2player.p2 + "의 승리입니다."); // p2의 승리라는 출력문
 				p2player.p2isWin = true; // p1Result() 메소드 호출
 			} else { // 만약 두 점수가 같다면
 				System.out.println("무승부입니다."); // 무승부라는 출력문
