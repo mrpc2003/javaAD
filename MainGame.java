@@ -189,22 +189,27 @@ public class MainGame {
         MainGameBoard b2 = new MainGameBoard(player2);
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
-            System.out.println(player1.name+"의 턴!");
-            player1.dice = dice();
-            b1.Game(player1.dice);
-            b1.getboard();
+            playerTurn(player1, b1);
+//            System.out.println(player1.name+"의 턴!");
+//            player1.dice = dice();
+//            b1.Game(player1.dice);
+//            b1.getboard();
 
-            System.out.println(player2.name+"의 턴!");
-            player2.dice = dice();
-            b2.Game(player2.dice);
-            b2.getboard();
+            playerTurn(player2, b2);
+//            System.out.println(player2.name+"의 턴!");
+//            player2.dice = dice();
+//            b2.Game(player2.dice);
+//            b2.getboard();
             
 //            if ()   // 메소드로 묶기
-            if (player1.isMiniGame||player2.isMiniGame) {
+            if (player1.isMiniGame || player2.isMiniGame) {
                 miniGame(MiniGameCount++, player1, player2);
-            } else if(isChance){
-                chance(MiniGameCount++, player1, player2);
-            }  else {
+                calculateMiniGameScore(player1, player2);
+            }
+//            else if(isChance){
+//                chance(MiniGameCount++, player1, player2);
+//            }
+            else {
                 //랜덤으로 3~5점 점수 획득
                 int randomscore = (int) (Math.random() * 3) + 3;
                 System.out.println("점수를 획득했습니다.");
@@ -224,8 +229,6 @@ public class MainGame {
             }
         }
 
-
-
         if (player1.Score > player2.Score) {
             player1.isWin = true;
             System.out.println(player1.name + "의 승리!");
@@ -236,6 +239,18 @@ public class MainGame {
             System.out.println("무승부!");
         }
     }
+
+    public static void playerTurn(GamePlayer player, MainGameBoard board) throws InterruptedException {
+        System.out.println(player.name+"의 턴 입니다.");
+        player.isTurn = true;
+        time();
+
+//        player.dice = dice();
+        board.Game(dice());
+        board.getboard();
+        player.isTurn = false;
+    }
+
     public static int dice() throws InterruptedException {
         int dice = (int) (Math.random() * 3) + 1;
         System.out.println("주사위를 굴립니다.");
@@ -253,72 +268,24 @@ public class MainGame {
         if (player.isWin) { // 미니게임 승리
             if (player.isBonus) { // 보너스를 받았을 경우.
                 player.isBonus = false;
+                System.out.println("특전으로 인해 "+player.name + "의 점수가 20점 증가합니다.");
                 player.Score += 20;
             } else { // 보너스를 받지 못했을 경우
+                System.out.println(player.name + "의 점수가 10점 증가합니다.");
                 player.Score += 10;
             }
         } else{ // 미니게임 패배
             if (player.isBonus) { // 보너스를 받았을 경우
                 player.isBonus = false;
+                System.out.println("특전으로 인해 "+player.name + "의 점수가 10점 증가합니다.");
                 player.Score += 10;
             } else { // 보너스를 받지 못했을 경우
+                System.out.println(player.name + "의 점수가 5점 증가합니다.");
                 player.Score += 5;
             }
         }
     }
-
-    public static void chance(int MiniGameCount,GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
-        boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
-        if (p1.isBonus){
-            System.out.println("보너스 카드를 뽑았습니다.");
-            time();
-            if (p1.isTurn){
-                bonusScore(p1.isBonus);
-            } else if (p2.isTurn){
-                bonusScore(p2.isBonus);
-            }
-
-        } if (isMiniGame){
-            miniGame(MiniGameCount, p1, p2);
-        } if (isScoreChange){
-            scoreChange(p1, p2);
-        } if (isPositionChange){
-            positionChange(p1, p2);
-        } if (isBackward) {
-            if (p1.isTurn){
-                backward(p1);
-            } else if (p2.isTurn){
-                backward(p2);
-            }
-        }
-    }
-    public static void scoreChange(GamePlayer myself, GamePlayer counterpart) throws InterruptedException {
-        System.out.println(myself.name+"와(과)"+counterpart.name+"의 점수가 변경되었습니다.");
-        time();
-        //5점을 상대방으로부터 가져옴/줌(무작위), 만약 5점보다 적다면, 가지고 있는 점수 전부를 줌
-
-        if (counterpart.Score < 5) {
-            myself.Score += counterpart.Score;
-            counterpart.Score = 0;
-        } else {
-            myself.Score += 5;
-            counterpart.Score -= 5;
-        }
-        System.out.println(myself.name+"의 점수: "+myself.Score);
-        System.out.println(counterpart.name+"의 점수: "+counterpart.Score);
-
-    }
-    public static void positionChange(GamePlayer myself, GamePlayer counterpart) {
-        System.out.println(myself.name+"와(과)"+counterpart.name+"의 위치가 변경되었습니다.");
-    }
-    public static void playerTurn(GamePlayer myself) throws InterruptedException {
-        System.out.println(myself.name+"의 차례입니다.");
-        time();
-        System.out.println("주사위를 굴립니다.");
-        dice();
-    }
-
-    public void calculateMiniGameScore(GamePlayer player1, GamePlayer player2) {
+    public static void calculateMiniGameScore(GamePlayer player1, GamePlayer player2) {
         if(player1.isWin){ // 플레이어 1이 승리했을 경우
             System.out.println(player1.name + "님이 승리하셨습니다.");
             winnerScoreUp(player1);
@@ -329,15 +296,10 @@ public class MainGame {
             winnerScoreUp(player1);
             winnerScoreUp(player2);
         } else { // 무승부일 경우
+            System.out.println("무승부입니다.");
             winnerScoreUp(player1);
             winnerScoreUp(player2);
         }
-    }
-
-    public static void bonusScore(GamePlayer player) {
-        System.out.println("미니게임 점수 2배 특전을 획득하셨습니다.");
-        System.out.println("이후 도착하는 1개의 미니게임 점수가 2배로 증가합니다.");
-        player.isBonus = true;
     }
     public static void miniGame(int MiniGameCount, GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
 
@@ -346,7 +308,6 @@ public class MainGame {
             time(); // 1초 쉬는 메소드
             System.out.print("."); // . 출력
         }
-
 
         // 4개의 미니게임 중 랜덤으로 선택
         if(MiniGameCount == 0){
@@ -383,13 +344,13 @@ public class MainGame {
             time();
             YachtGame_Main.start(p1.name, p2.name);
             if (p1player.p1isWin) {
-                System.out.println(p1.name + "님이 승리하셨습니다.");
                 p1.isWin = true;
+                time();
             } else if (p2player.p2isWin) {
-                System.out.println(p2.name + "님이 승리하셨습니다.");
                 p2.isWin = true;
+                time();
             } else {
-                System.out.println("무승부입니다.");
+                time();
             }
         }
         else if(miniGame[MiniGameCount]==2){
@@ -407,16 +368,64 @@ public class MainGame {
             time();
             BM.start(p1.name, p2.name);
             if (BM.p1isWin) {
-                System.out.println(p1.name + "님이 승리하셨습니다.");
                 p1.isWin = true;
+                time();
 
             } else if (BM.p2isWin) {
-                System.out.println(p2.name + "님이 승리하셨습니다.");
                 p2.isWin = true;
+                time();
             } else {
-                System.out.println("무승부입니다.");
+                time();
             }
         }
+    }
+    public static void chance(int MiniGameCount,GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
+        boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
+        if (p1.isBonus){
+            System.out.println("보너스 카드를 뽑았습니다.");
+            time();
+            if (p1.isTurn){
+                bonusScore(p1);
+            } else if (p2.isTurn){
+                bonusScore(p2);
+            }
+        } if (isMiniGame){
+            miniGame(MiniGameCount, p1, p2);
+        } if (isScoreChange){
+            scoreChange(p1, p2);
+        } if (isPositionChange){
+            positionChange(p1, p2);
+        } if (isBackward) {
+            if (p1.isTurn){
+                backward(p1);
+            } else if (p2.isTurn){
+                backward(p2);
+            }
+        }
+    }
+    public static void scoreChange(GamePlayer myself, GamePlayer counterpart) throws InterruptedException {
+        System.out.println(myself.name+"와(과)"+counterpart.name+"의 점수가 변경되었습니다.");
+        time();
+        //5점을 상대방으로부터 가져옴/줌(무작위), 만약 5점보다 적다면, 가지고 있는 점수 전부를 줌
+
+        if (counterpart.Score < 5) {
+            myself.Score += counterpart.Score;
+            counterpart.Score = 0;
+        } else {
+            myself.Score += 5;
+            counterpart.Score -= 5;
+        }
+        System.out.println(myself.name+"의 점수: "+myself.Score);
+        System.out.println(counterpart.name+"의 점수: "+counterpart.Score);
+
+    }
+    public static void positionChange(GamePlayer myself, GamePlayer counterpart) {
+        System.out.println(myself.name+"와(과)"+counterpart.name+"의 위치가 변경되었습니다.");
+    }
+    public static void bonusScore(GamePlayer player) {
+        System.out.println("미니게임 점수 2배 특전을 획득하셨습니다.");
+        System.out.println("이후 도착하는 1개의 미니게임 점수가 2배로 증가합니다.");
+        player.isBonus = true;
     }
     public static void backward(GamePlayer myself) throws InterruptedException {
         System.out.println("1칸 뒤로 이동합니다.");
