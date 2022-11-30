@@ -6,12 +6,14 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 class MainGameBoard{
-    GamePlayer p ;
+    GamePlayer p;
+
     static boolean start = false;
     static int [][] board = new int[4][4];
     int x =3, y=3;
+    int b1, b2, b3, b4, b5, b6, b7, b8;
     static int cnt ;
-    int rest,cnt2=0, dice;
+    int rest,cnt2=0, no,dice;
     String square_up = "┏━━━━━┓";
     String square_bottom = "┗━━━━━┛";
     String square_height_m = "┃" + "  M  "+ "┃" ;
@@ -25,9 +27,10 @@ class MainGameBoard{
         this.p = p;
     }
 
-    void getboard() {
-//        p = new GamePlayer();
 
+    void getboard() {
+
+//        p = new GamePlayer();
         for(int i=0; i<4; i++) {
             System.out.print(square_up);
         }
@@ -87,20 +90,17 @@ class MainGameBoard{
             System.out.print(square_bottom);
         }
         System.out.println();
-        if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
-            if(p.isMiniGame){
-                return;
-            }
-            p.isMiniGame = true;
-        } else if(board[0][1] != 0 || board[1][3] !=0 || board[2][0] !=0|| board[2][3] !=0|| board[3][2] !=0){
-            if(p.isChance){
-                return;
-            }
-            p.isChance = true;
-        }
+
     }
     void Game(int dice) {
-
+        b1 = board[3][0];
+        b2 = board[0][0];
+        b3 = board[0][3];
+        b4 = board[3][2];
+        b5 = board[2][0];
+        b6 = board[0][1];
+        b7 = board[1][3];
+        b8 = board[2][3];
         if(cnt ==0){
             board[3][3] =3;
 
@@ -134,7 +134,6 @@ class MainGameBoard{
                 if (x >= 3) {
                     System.out.println("끝");
                     p.isFinish = true;
-
                 }
             }
         } else {
@@ -154,7 +153,11 @@ class MainGameBoard{
             board[p.playerPosition[0]][p.playerPosition[1]] -= 2;
             board[x][y] += 2;
         }
-
+        if(board[3][0] >b1 || board[0][0] > b2 || board[0][3] >b3 ) {
+            p.isMiniGame = true;
+        } else if(board[0][1] > b6 || board[1][3] >b7 || board[2][0] >b5 || board[2][3] >b8 || board[3][2] >b4){
+            p.isChance = true;
+        }
         p.playerPosition[1] = y;
         p.playerPosition[0] = x;
     }
@@ -217,15 +220,20 @@ public class MainGame {
 
 
         // 게임 시작
-        while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
+        while(true){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
             playerTurn(player1, player2,b1);
+            if(player1.isFinish == true){
+                break;
+            }
             playerTurn(player2, player1,b2);
-
+            if(player2.isFinish == true){
+                break;
+            }
         }
 
     }
     public static void playerTurn(GamePlayer myself, GamePlayer counterPart, MainGameBoard board) throws InterruptedException, IOException {
-        System.out.println(myself.name+"의 턴 입니다.");
+        System.out.println(myself.name + "의 턴 입니다.");
         myself.isTurn = true;
         time();
         board.Game(dice());
@@ -242,9 +250,17 @@ public class MainGame {
         } else if (myself.isFinish){
             if (myself.Score > counterPart.Score) {
                 myself.isWin = true;
+                System.out.println("게임이 종료되었습니다.");
+                time();
+                System.out.printf("%s는 %d, %s는%d 이므로... \n", myself.name,myself.Score, counterPart.name,counterPart.Score);
+                time();
                 System.out.println(myself.name + "의 승리!");
             } else if (myself.Score < counterPart.Score) {
                 counterPart.isWin = true;
+                System.out.println("게임이 종료되었습니다.");
+                time();
+                System.out.printf("%s는 %d, %s는%d 이므로... \n", myself.name,myself.Score, counterPart.name,counterPart.Score);
+                time();
                 System.out.println(counterPart.name + "의 승리!");
             } else {
                 System.out.println("무승부!");
@@ -327,7 +343,6 @@ public class MainGame {
         }
     }
     public static void miniGame(GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
-
         System.out.println("미니게임을 시작합니다.");
         for (int i = 3; i > 0; i--) { // 3초 카운트 다운
             time(); // 1초 쉬는 메소드
@@ -405,21 +420,21 @@ public class MainGame {
 
         //랜덤으로 찬스를 실행
         //랜덤으로 불리언 값을 true로 변경
-        int random = (int) (Math.random() * 5) + 1;
+        int random = (int) (Math.random() * 5) + 1; // 진우형 꺠면 묻기
         if(random == 1){
-            myself.isScoreChange = true;
-        }
-        else if(random == 2){
-            myself.isPositionChange = true;
-        }
-        else if(random == 3){
             myself.isBonus = true;
         }
-        else if(random == 4){
+        else if(random == 2){
             myself.isMiniGame = true;
         }
-        else {
+        else if(random == 3){
             myself.isBackward = true;
+        }
+        else if(random == 4){
+            myself.isScoreChange = true;
+        }
+        else {
+            myself.isPositionChange = true;
         }
         if (myself.isBonus) {
             System.out.println("보너스 카드를 뽑았습니다.");
@@ -428,11 +443,12 @@ public class MainGame {
         }
         if (myself.isMiniGame) {
             miniGame(myself, counterPart);
+            calculateMiniGameScore(myself, counterPart);
         }
         if (myself.isScoreChange) {
             scoreChange(myself, counterPart);
-            myself.isMiniGame = false;
-            myself.isChance = false;
+//            myself.isMiniGame = false;
+//            myself.isChance = false;
         }
         if (myself.isPositionChange) {
             positionChange(myself, counterPart, board);
@@ -440,7 +456,7 @@ public class MainGame {
             myself.isMiniGame = false;
         }
         if (myself.isBackward) {
-            backward(myself, board);
+            backward(myself, board); // <- 뒤로 갔을 때 찬스 위치면 isChance = true;
         }
     }
     public static void scoreChange(GamePlayer myself, GamePlayer counterpart) throws InterruptedException {
@@ -461,12 +477,10 @@ public class MainGame {
     }
     public static void positionChange(GamePlayer myself, GamePlayer counterpart, MainGameBoard board) {
         System.out.println(myself.name+"와(과)"+counterpart.name+"의 위치가 변경되었습니다.");
-        int x = myself.playerPosition[0];
-        int y = myself.playerPosition[1];
-        myself.playerPosition[0] = counterpart.playerPosition[0];
-        myself.playerPosition[1] = counterpart.playerPosition[1];
-        counterpart.playerPosition[0] = x;
-        counterpart.playerPosition[1] = y;
+        int x = MainGameBoard.board[counterpart.playerPosition[0]][counterpart.playerPosition[1]];
+        MainGameBoard.board[counterpart.playerPosition[0]][counterpart.playerPosition[1]] = MainGameBoard.board[myself.playerPosition[0]][myself.playerPosition[1]];
+        MainGameBoard.board[myself.playerPosition[0]][myself.playerPosition[1]] =x;
+
         board.getboard();
     }
     public static void bonusScore(GamePlayer player) {
@@ -478,7 +492,7 @@ public class MainGame {
         int a,b;
         System.out.println("1칸 뒤로 이동합니다.");
         System.out.println(myself.name+"의 위치가 변경되었습니다.");
-
+        myself.isBackward = false;
         time();
         MainGameBoard.cnt--;
         board.Game(-1);
