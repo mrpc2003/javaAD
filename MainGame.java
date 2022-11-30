@@ -425,9 +425,11 @@ public class MainGame {
             System.out.println("보너스 카드를 뽑았습니다.");
             time();
             bonusScore(myself);
+            myself.isChance = false;
         }
         if (myself.isMiniGame) {
             miniGame(myself, counterPart);
+            myself.isChance = false;
         }
         if (myself.isScoreChange) {
             scoreChange(myself, counterPart);
