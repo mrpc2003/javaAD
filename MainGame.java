@@ -141,7 +141,7 @@ class MainGameBoard{
         }
 
         if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
-            start = true;
+            p.isMiniGame = true;
         }
 
         p.playerPosition[1] = y;
@@ -327,18 +327,19 @@ public class MainGame {
 
         //4개의 원소가 들어가는 배열 생성
         int[] miniGame = new int[4];
-        //배열에 1~4까지의 숫자를 랜덤으로 넣기
-        for(int i=0; i<miniGame.length; i++) {
-            miniGame[i] = (int)(Math.random()*4)+1;
-            for(int j=0; j<i; j++) {
-                if(miniGame[i]==miniGame[j]) {
+        //배열에 1~4까지의 숫자를 중복없이 넣기
+        for (int i = 0; i < miniGame.length; i++) {
+            miniGame[i] = (int) (Math.random() * 4) + 1;
+            for (int j = 0; j < i; j++) {
+                if (miniGame[i] == miniGame[j]) {
                     i--;
                     break;
                 }
             }
         }
+
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
-        if(miniGame[MiniGameCount]==1) {
+        if(miniGame[MiniGameCount] == 1) {
             System.out.println("Yacht Dice를 시작합니다.");
             time();
             YachtGame_Main.start(p1.name, p2.name);
@@ -393,7 +394,7 @@ public class MainGame {
                 bonusScore(p2);
             }
         } if (isMiniGame){
-            miniGame(MiniGameCount, p1, p2);
+            miniGame(4, p1, p2);
         } if (isScoreChange){
             scoreChange(p1, p2);
         } if (isPositionChange){
