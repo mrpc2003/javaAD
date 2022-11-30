@@ -358,18 +358,18 @@ public class MainGame {
 
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
         if(random == 1) {
-//            System.out.println("Yacht Dice를 시작합니다.");
-//            time();
-//            YachtGame_Main.start(p1.name, p2.name);
-//            if (p1player.p1isWin) {
-//                p1.isWin = true;
-//                time();
-//            } else if (p2player.p2isWin) {
-//                p2.isWin = true;
-//                time();
-//            } else {
-//                time();
-//            }
+            System.out.println("Yacht Dice를 시작합니다.");
+            time();
+            YachtGame_Main.start(p1.name, p2.name);
+            if (p1player.p1isWin) {
+                p1.isWin = true;
+                time();
+            } else if (p2player.p2isWin) {
+                p2.isWin = true;
+                time();
+            } else {
+                time();
+            }
         }
         if(random==2){
             System.out.println("고스트 게임을 시작합니다.");
