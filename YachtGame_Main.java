@@ -43,8 +43,8 @@ public class YachtGame_Main {
 		ScoreBoard sb = new ScoreBoard(); // 점수판
 		p1player p1 = new p1player(); // 플레이어 1
 		p2player p2 = new p2player(); // 플레이어 2
-		mainGameConnect.setP1name(p1name); // 플레이어 1 이름 설정
-		mainGameConnect.setP2name(p2name); // 플레이어 2 이름 설정
+		mainGameConnect.setP1name(p1name.toString()); // 플레이어 1 이름 설정
+		mainGameConnect.setP2name(p2name.toString()); // 플레이어 2 이름 설정
 		String ans = ""; // 플레이어가 입력한 답
 		String temp = ""; // 플레이어가 입력한 답을 임시로 저장
 		int[] dice = new int[5]; // 주사위 5개를 저장할 배열

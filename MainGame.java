@@ -88,8 +88,14 @@ class MainGameBoard{
         }
         System.out.println();
         if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
+            if(!p.isMiniGame){
+                return;
+            }
             p.isMiniGame = true;
         } else if(board[0][1] != 0 || board[1][3] !=0 || board[2][0] !=0|| board[2][3] !=0|| board[3][2] !=0){
+            if(!p.isChance){
+                return;
+            }
             p.isChance = true;
         }
     }
@@ -127,6 +133,8 @@ class MainGameBoard{
                 cnt2++;
                 if (x >= 3) {
                     System.out.println("끝");
+                    p.isFinish = true;
+
                 }
             }
         } else {
@@ -134,6 +142,8 @@ class MainGameBoard{
             if (x >= 3) {
                 x =3;
                 System.out.println("끝");
+                p.isFinish = true;
+
             }
         }
         cnt++;
@@ -223,7 +233,7 @@ public class MainGame {
 
         //이부분 구현해야함
         if (myself.isChance) {
-            chance(myself, counterPart);
+            chance(myself, counterPart, board);
         } else if (myself.isMiniGame) {
             miniGame(myself, counterPart);
             calculateMiniGameScore(myself, counterPart);
@@ -325,18 +335,18 @@ public class MainGame {
 
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
         if(random == 1) {
-            System.out.println("Yacht Dice를 시작합니다.");
-            time();
-            YachtGame_Main.start(p1.name, p2.name);
-            if (p1player.p1isWin) {
-                p1.isWin = true;
-                time();
-            } else if (p2player.p2isWin) {
-                p2.isWin = true;
-                time();
-            } else {
-                time();
-            }
+//            System.out.println("Yacht Dice를 시작합니다.");
+//            time();
+//            YachtGame_Main.start(p1.name, p2.name);
+//            if (p1player.p1isWin) {
+//                p1.isWin = true;
+//                time();
+//            } else if (p2player.p2isWin) {
+//                p2.isWin = true;
+//                time();
+//            } else {
+//                time();
+//            }
         }
         if(random==2){
             System.out.println("고스트 게임을 시작합니다.");
@@ -382,9 +392,7 @@ public class MainGame {
         }
 
     }
-    public static void chance(GamePlayer myself, GamePlayer counterPart) throws IOException, InterruptedException {
-
-
+    public static void chance(GamePlayer myself, GamePlayer counterPart, MainGameBoard board) throws IOException, InterruptedException {
         myself.isChance = false;
 
         //랜덤으로 찬스를 실행
@@ -415,12 +423,16 @@ public class MainGame {
         }
         if (myself.isScoreChange) {
             scoreChange(myself, counterPart);
+            myself.isMiniGame = false;
+            myself.isChance = false;
         }
         if (myself.isPositionChange) {
-            positionChange(myself, counterPart);
+            positionChange(myself, counterPart, board);
+            myself.isChance = false;
+            myself.isMiniGame = false;
         }
         if (myself.isBackward) {
-            backward(myself);
+            backward(myself, board);
         }
     }
     public static void scoreChange(GamePlayer myself, GamePlayer counterpart) throws InterruptedException {
@@ -439,18 +451,29 @@ public class MainGame {
         System.out.println(counterpart.name+"의 점수: "+counterpart.Score);
 
     }
-    public static void positionChange(GamePlayer myself, GamePlayer counterpart) {
+    public static void positionChange(GamePlayer myself, GamePlayer counterpart, MainGameBoard board) {
         System.out.println(myself.name+"와(과)"+counterpart.name+"의 위치가 변경되었습니다.");
+        int x = myself.playerPosition[0];
+        int y = myself.playerPosition[1];
+        myself.playerPosition[0] = counterpart.playerPosition[0];
+        myself.playerPosition[1] = counterpart.playerPosition[1];
+        counterpart.playerPosition[0] = x;
+        counterpart.playerPosition[1] = y;
+        board.getboard();
     }
     public static void bonusScore(GamePlayer player) {
         System.out.println("미니게임 점수 2배 특전을 획득하셨습니다.");
         System.out.println("이후 도착하는 1개의 미니게임 점수가 2배로 증가합니다.");
         player.isBonus = true;
     }
-    public static void backward(GamePlayer myself) throws InterruptedException {
+    public static void backward(GamePlayer myself, MainGameBoard board) throws InterruptedException {
+        int a,b;
         System.out.println("1칸 뒤로 이동합니다.");
         System.out.println(myself.name+"의 위치가 변경되었습니다.");
         time();
+        MainGameBoard.cnt--;
+        board.Game(-1);
+
     }
     public static void time() throws InterruptedException {
         TimeUnit.SECONDS.sleep(1);
