@@ -159,6 +159,6 @@ public class BM {
 
 		} while (bingoCnt >= 0);
 		System.out.println("------------¹«½ÂºÎ-----------");
-		scanner.close();
+//		scanner.close();
 	}
 }
