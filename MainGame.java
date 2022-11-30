@@ -239,6 +239,15 @@ public class MainGame {
         board.Game(dice());
         board.getboard();
         player.isTurn = false;
+
+//        //이부분 구현해야함
+//        if (player.isChance) {
+//            chance(player);
+//        } else if (player.isMiniGame) {
+//            miniGame(player);
+//        } else if (player.isFinish){
+//
+//        }
     }
 
     public static int dice() throws InterruptedException {
@@ -372,7 +381,9 @@ public class MainGame {
     public static void chance(int MiniGameCount,GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
         boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
 
-        ra
+        //랜덤으로 찬스를 실행시킬 수 있도록 추가해야함
+
+
         if (p1.isBonus){
             System.out.println("보너스 카드를 뽑았습니다.");
             time();
