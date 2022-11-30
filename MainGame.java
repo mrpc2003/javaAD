@@ -9,7 +9,6 @@ class MainGameBoard{
     GamePlayer p ;
     static boolean start = false;
     static int [][] board = new int[4][4];
-
     int x =3, y=3;
     static int cnt ;
     int rest,cnt2=0, dice;
@@ -87,6 +86,7 @@ class MainGameBoard{
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
         }
+        System.out.println();
     }
     void Game(int dice) {
 
@@ -174,23 +174,29 @@ public class MainGame {
         Scanner scanner = new Scanner(System.in);
         int MiniGameCount = -1;
 
-        System.out.println("Player 1의 이름을 입력해주세요: ");
+        System.out.print("Player 1의 이름을 입력해주세요: ");
         player1.name = scanner.nextLine();
 
-        System.out.println("Player 2의 이름을 입력해주세요: ");
+        System.out.print("Player 2의 이름을 입력해주세요: ");
         player2.name = scanner.nextLine();
         System.out.println("게임을 시작합니다.");
         Thread.sleep(1000); //1초 대기
+
+        System.out.println(player1.name+"은(는) ○로 표시됩니다.");
+        time();
+        System.out.println(player2.name+"은(는) ●로 표시됩니다.");
+        time();
         System.out.println("게임판을 출력합니다.");
         MainGameBoard b1 = new MainGameBoard(player1);
         MainGameBoard b2 = new MainGameBoard(player2);
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
-            System.out.printf("%s의 턴!", player1.name);
+            System.out.println(player1.name+"의 턴!");
             player1.dice = dice();
             b1.Game(player1.dice);
             b1.getboard();
-            System.out.printf("%s의 턴!", player2.name);
+
+            System.out.println(player2.name+"의 턴!");
             player2.dice = dice();
             b2.Game(player2.dice);
             b2.getboard();
@@ -241,6 +247,7 @@ public class MainGame {
         }
         time(); // 1초 쉬는 메소드
         System.out.println("주사위의 숫자는 " + dice + "입니다.");
+        time();
         System.out.println(dice+"칸 이동합니다.");
         return dice;
     }
@@ -368,7 +375,7 @@ public class MainGame {
         }
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
         if(miniGame[MiniGameCount]==1) {
-            System.out.println("Yacht Dice 를 시작합니다.");
+            System.out.println("Yacht Dice를 시작합니다.");
             YachtGame_Main.start(p1name, p2name);
             if (p1player.p1isWin) {
                 System.out.println(p1name + "님이 승리하셨습니다.");
@@ -387,7 +394,7 @@ public class MainGame {
             blackjack_withclass.Bstart(p1name, p2name);
         }
         else if(miniGame[MiniGameCount]==4){
-            System.out.println("빙고게임을 시작합니다.");
+            System.out.println("빙고 게임을 시작합니다.");
             BM.start(p1name, p2name);
             if (BM.p1isWin) {
                 System.out.println(p1name + "님이 승리하셨습니다.");
