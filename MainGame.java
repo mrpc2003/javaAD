@@ -190,16 +190,8 @@ public class MainGame {
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
             playerTurn(player1, b1);
-//            System.out.println(player1.name+"의 턴!");
-//            player1.dice = dice();
-//            b1.Game(player1.dice);
-//            b1.getboard();
-
             playerTurn(player2, b2);
-//            System.out.println(player2.name+"의 턴!");
-//            player2.dice = dice();
-//            b2.Game(player2.dice);
-//            b2.getboard();
+
             
 //            if ()   // 메소드로 묶기
             if (player1.isMiniGame || player2.isMiniGame) {
@@ -228,7 +220,6 @@ public class MainGame {
                 }
             }
         }
-
         if (player1.Score > player2.Score) {
             player1.isWin = true;
             System.out.println(player1.name + "의 승리!");
@@ -239,7 +230,6 @@ public class MainGame {
             System.out.println("무승부!");
         }
     }
-
     public static void playerTurn(GamePlayer player, MainGameBoard board) throws InterruptedException {
         System.out.println(player.name+"의 턴 입니다.");
         player.isTurn = true;
