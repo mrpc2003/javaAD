@@ -192,9 +192,8 @@ public class MainGame {
             playerTurn(player1, b1);
             playerTurn(player2, b2);
 
-            
 //            if ()   // 메소드로 묶기
-            if (player1.isMiniGame || player2.isMiniGame) {
+            if (!player1.isMiniGame || !player2.isMiniGame) {
                 miniGame(MiniGameCount++, player1, player2);
                 calculateMiniGameScore(player1, player2);
             }
@@ -240,14 +239,14 @@ public class MainGame {
         board.getboard();
         player.isTurn = false;
 
-//        //이부분 구현해야함
-//        if (player.isChance) {
-//            chance(player);
-//        } else if (player.isMiniGame) {
-//            miniGame(player);
-//        } else if (player.isFinish){
-//
-//        }
+        //이부분 구현해야함
+        if (player.isChance) {
+            chance(player);
+        } else if (player.isMiniGame) {
+            miniGame(player);
+        } else if (player.isFinish){
+
+        }
     }
 
     public static int dice() throws InterruptedException {
@@ -309,6 +308,7 @@ public class MainGame {
         }
 
         // 4개의 미니게임 중 랜덤으로 선택
+        int random = (int) (Math.random() * 4) + 1;
         if(MiniGameCount == 0){
             System.out.println("미니게임은 총 4개가 있습니다.");
             System.out.println();
