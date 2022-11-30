@@ -229,7 +229,7 @@ public class MainGame {
             System.out.println("무승부!");
         }
     }
-    public static void playerTurn(GamePlayer player, MainGameBoard board) throws InterruptedException {
+    public static void playerTurn(GamePlayer player, MainGameBoard board) throws InterruptedException, IOException {
         System.out.println(player.name+"의 턴 입니다.");
         player.isTurn = true;
         time();
@@ -249,9 +249,10 @@ public class MainGame {
         }
     }
 
-    public static int dice() throws InterruptedException {
+    public static int dice() throws InterruptedException, IOException {
         int dice = (int) (Math.random() * 3) + 1;
-        System.out.println("주사위를 굴립니다.");
+        System.out.println("Enter를 눌러서 주사위를 굴리세요!");
+        pause();
         for (int i = 3; i > 0; i--) { // 3초 카운트 다운
             time(); // 1초 쉬는 메소드
             System.out.print("."); // . 출력
@@ -437,5 +438,9 @@ public class MainGame {
     }
     public static void time() throws InterruptedException {
         TimeUnit.SECONDS.sleep(1);
+    }
+    public static void pause() throws IOException
+    {
+        System.in.read();
     }
 }
