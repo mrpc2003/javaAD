@@ -371,6 +371,8 @@ public class MainGame {
     }
     public static void chance(int MiniGameCount,GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
         boolean isScoreChange = false, isPositionChange = false, isBonus = false, isMiniGame = false, isBackward = false;
+
+        ra
         if (p1.isBonus){
             System.out.println("보너스 카드를 뽑았습니다.");
             time();
