@@ -88,12 +88,12 @@ class MainGameBoard{
         }
         System.out.println();
         if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
-            if(!p.isMiniGame){
+            if(p.isMiniGame){
                 return;
             }
             p.isMiniGame = true;
         } else if(board[0][1] != 0 || board[1][3] !=0 || board[2][0] !=0|| board[2][3] !=0|| board[3][2] !=0){
-            if(!p.isChance){
+            if(p.isChance){
                 return;
             }
             p.isChance = true;
@@ -232,8 +232,10 @@ public class MainGame {
         board.getboard();
 
         //이부분 구현해야함
+        loop:
         if (myself.isChance) {
             chance(myself, counterPart, board);
+            break loop;
         } else if (myself.isMiniGame) {
             miniGame(myself, counterPart);
             calculateMiniGameScore(myself, counterPart);
@@ -470,9 +472,11 @@ public class MainGame {
         int a,b;
         System.out.println("1칸 뒤로 이동합니다.");
         System.out.println(myself.name+"의 위치가 변경되었습니다.");
+
         time();
         MainGameBoard.cnt--;
         board.Game(-1);
+        board.getboard();
 
     }
     public static void time() throws InterruptedException {

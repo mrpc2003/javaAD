@@ -106,19 +106,12 @@ class Game  								//ÀüÃ¼ °ÔÀÓ °üÇÒ
 	public static boolean p2win = false;
 	String Bp1name;
 	String Bp2name;
-<<<<<<< Updated upstream
-	Player p1 = new Player(Bp1name);			// ÀÌ¸§°ú ÇÔ²² p1 ÁöÁ¤ (¸ŞÀÎ °ÔÀÓ¿¡¼­ÀÇ ÀÌ¸§ ¹Ş¾Æ¿Àµµ·Ï)
-	Player p2 = new Player(Bp2name);			// ÀÌ¸§°ú ÇÔ²² p2 ÁöÁ¤
-	Dealer dealer = new Dealer();			// µô·¯ »ı¼º
-	CardDeck carddeck = new CardDeck();		// ÀüÃ¼ Ä«µå µ¦ »ı¼º
-	int playCount = 0;						// ¸î ¶ó¿îµå µ¹Áö Á¤ÇÏ´Â º¯¼ö
-=======
-	Player p1 = new Player();				// p1 ì§€ì • (ë©”ì¸ ê²Œì„ì—ì„œì˜ ì´ë¦„ ë°›ì•„ì˜¤ë„ë¡)
-	Player p2 = new Player();				// p2 ì§€ì •
-	Dealer dealer = new Dealer();			// ë”œëŸ¬ ìƒì„±
-	CardDeck carddeck = new CardDeck();		// ì „ì²´ ì¹´ë“œ ë± ìƒì„±
-	int playCount = 0;						// ëª‡ ë¼ìš´ë“œ ëŒì§€ ì •í•˜ëŠ” ë³€ìˆ˜
->>>>>>> Stashed changes
+
+	Player p1 = new Player();				// p1 ì§?? • (ë©”ì¸ ê²Œì„?—?„œ?˜ ?´ë¦? ë°›ì•„?˜¤?„ë¡?)
+	Player p2 = new Player();				// p2 ì§?? •
+	Dealer dealer = new Dealer();			// ?”œ?Ÿ¬ ?ƒ?„±
+	CardDeck carddeck = new CardDeck();		// ? „ì²? ì¹´ë“œ ?± ?ƒ?„±
+	int playCount = 0;						// ëª? ?¼?š´?“œ ?Œì§? ? •?•˜?Š” ë³??ˆ˜
 
 	Game(String p1name, String p2name)
 	{
@@ -129,15 +122,12 @@ class Game  								//ÀüÃ¼ °ÔÀÓ °üÇÒ
 	// ----------------------------------------------- °ÔÀÓ ½ÇÇà ºÎºĞ ->
 	public void init() throws InterruptedException, IOException
 	{
-		p1.setName(Bp1name);				// ì´ë¦„ ìƒì„±
+		p1.setName(Bp1name);				// ?´ë¦? ?ƒ?„±
 		p2.setName(Bp2name);
 		playCount = 5;
 		p1.setCoin(1000);
-<<<<<<< Updated upstream
 		p2.setCoin(1000);					//ÇÃ·¹ÀÌ¾î µ·
-=======
-		p2.setCoin(1000);					// í”Œë ˆì´ì–´ ëˆ
->>>>>>> Stashed changes
+
 		MiniGameStart();
 		//Ãâ·Â ¸î°³ ÇØ¼­ ²Ù¹Ì±â(Å¸ÀÌÆ², ·ê ¼³¸í, µîµî)
 	}
