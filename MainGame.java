@@ -88,10 +88,14 @@ class MainGameBoard{
         }
         System.out.println();
         if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
-
+            if(p.isMiniGame){
+                return;
+            }
             p.isMiniGame = true;
         } else if(board[0][1] != 0 || board[1][3] !=0 || board[2][0] !=0|| board[2][3] !=0|| board[3][2] !=0){
-
+            if(p.isChance){
+                return;
+            }
             p.isChance = true;
         }
     }
@@ -214,11 +218,7 @@ public class MainGame {
 
         // 게임 시작
         while(!player1.isFinish || !player2.isFinish){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
-            player1.isChance = false;
-            player1.isMiniGame = false;
             playerTurn(player1, player2,b1);
-            player2.isChance = false;
-            player2.isMiniGame = false;
             playerTurn(player2, player1,b2);
 
         }
@@ -253,12 +253,12 @@ public class MainGame {
             int randomscore = (int) (Math.random() * 3) + 3;
             System.out.println("점수를 획득했습니다.");
 
-                System.out.println("획득한 점수: "+randomscore);
-                myself.Score += randomscore;
-                System.out.println(myself.name + "의 점수: " + myself.Score);
-                System.out.println(counterPart.name + "의 점수: " + counterPart.Score);
-                myself.isTurn = false;
-                counterPart.isTurn = true;
+            System.out.println("획득한 점수: "+randomscore);
+            myself.Score += randomscore;
+            System.out.println(myself.name + "의 점수: " + myself.Score);
+            System.out.println(counterPart.name + "의 점수: " + counterPart.Score);
+            myself.isTurn = false;
+            counterPart.isTurn = true;
 
         }
     }
@@ -322,6 +322,8 @@ public class MainGame {
             winnerScoreUp(player2);
             player1.isMiniGame = false;
             player2.isMiniGame = false;
+            player1.isChance = false;
+            player2.isChance = false;
         }
     }
     public static void miniGame(GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
@@ -355,46 +357,46 @@ public class MainGame {
 //            }
         }
         if(random==2){
-//            System.out.println("고스트 게임을 시작합니다.");
-//            time();
-//            oriented.start(p1.name, p2.name);
-//            if (oriented.result) {
-//                p1.isWin = true;
-//                time();
-//            }  else {
-//                p2.isWin = true;
-//                time();
-//            }
+            System.out.println("고스트 게임을 시작합니다.");
+            time();
+            oriented.start(p1.name, p2.name);
+            if (oriented.result) {
+                p1.isWin = true;
+                time();
+            }  else {
+                p2.isWin = true;
+                time();
+            }
         }
         if(random==3){
-//            System.out.println("블랙잭을 시작합니다.");
-//            time();
-//            blackjack_withclass.Bstart(p1.name, p2.name);
-//            if (Game.p1win) {
-//                p1.isWin = true;
-//                time();
-//
-//            } else if (Game.p2win) {
-//                p2.isWin = true;
-//                time();
-//            } else {
-//                time();
-//            }
+            System.out.println("블랙잭을 시작합니다.");
+            time();
+            blackjack_withclass.Bstart(p1.name, p2.name);
+            if (Game.p1win) {
+                p1.isWin = true;
+                time();
+
+            } else if (Game.p2win) {
+                p2.isWin = true;
+                time();
+            } else {
+                time();
+            }
         }
         if(random==4){
-//            System.out.println("빙고 게임을 시작합니다.");
-//            time();
-//            BM.start(p1.name, p2.name);
-//            if (BM.p1isWin) {
-//                p1.isWin = true;
-//                time();
-//
-//            } else if (BM.p2isWin) {
-//                p2.isWin = true;
-//                time();
-//            } else {
-//                time();
-//            }
+            System.out.println("빙고 게임을 시작합니다.");
+            time();
+            BM.start(p1.name, p2.name);
+            if (BM.p1isWin) {
+                p1.isWin = true;
+                time();
+
+            } else if (BM.p2isWin) {
+                p2.isWin = true;
+                time();
+            } else {
+                time();
+            }
         }
 
     }
@@ -426,7 +428,6 @@ public class MainGame {
         }
         if (myself.isMiniGame) {
             miniGame(myself, counterPart);
-            calculateMiniGameScore(myself, counterPart);
         }
         if (myself.isScoreChange) {
             scoreChange(myself, counterPart);
