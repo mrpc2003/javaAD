@@ -87,6 +87,11 @@ class MainGameBoard{
             System.out.print(square_bottom);
         }
         System.out.println();
+        if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
+            p.isMiniGame = true;
+        } else if(board[0][1] != 0 || board[1][3] !=0 || board[2][0] !=0|| board[2][3] !=0|| board[3][2] !=0){
+            p.isChance = true;
+        }
     }
     void Game(int dice) {
 
@@ -138,10 +143,6 @@ class MainGameBoard{
         } else {
             board[p.playerPosition[0]][p.playerPosition[1]] -= 2;
             board[x][y] += 2;
-        }
-
-        if(board[3][0] !=0 || board[0][0] != 0 || board[0][3] !=0 ) {
-            p.isMiniGame = true;
         }
 
         p.playerPosition[1] = y;
