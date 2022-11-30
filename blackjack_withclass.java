@@ -1,10 +1,12 @@
 package AD_Project;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class blackjack_withclass
 {
-	public static void Bstart(String p1name, String p2name)
+	public static void Bstart(String p1name, String p2name) throws InterruptedException, IOException
 	{
 
 		Game blackjack = new Game(p1name, p2name);
@@ -115,47 +117,51 @@ class Game  								//전체 게임 관할
 	}
 
 	// ----------------------------------------------- 게임 실행 부분 ->
-	public void init()
+	public void init() throws InterruptedException, IOException
 	{
 		playCount = 5;
 		p1.setCoin(1000);
 		p2.setCoin(1000);					//플레이어 돈
+		MiniGameStart();
 		//출력 몇개 해서 꾸미기(타이틀, 룰 설명, 등등)
 	}
 	public void play()
 	{
-		for (int i = 0; i<playCount; i++)
-		{
-			//플레이어, 딜러 리셋 후 라운드 시작
-			RoundStart(i+1);
+		checkcoin :while(true) {
+			for (int i = 0; i < playCount; i++) {
+				//플레이어, 딜러 리셋 후 라운드 시작
+				RoundStart(i + 1);
 
-			// 돈 걸기
-			BetCoin();
+				// 돈 걸기
+				BetCoin();
 
-			// 카드 섞기
-			carddeck.shuffle();
+				// 카드 섞기
+				carddeck.shuffle();
 
-			// 처음에 카드 나눠주기
-			giveInitialCard();
+				// 처음에 카드 나눠주기
+				giveInitialCard();
 
-			// 21 판단
-			while(true)
-			{
-				// 카드들과 합 보여주기(이 안에 showcardlist있음)
-				displayGame();
+				// 21 판단
+				while (true) {
+					// 카드들과 합 보여주기(이 안에 showcardlist있음)
+					displayGame();
 
-				//hit stay묻기
-				HitOrStay();
+					//hit stay묻기
+					HitOrStay();
 
-				// 대답이 hit인지 stay인지 판단
-				if (p1.getState() != ActorState.Hit && p2.getState() != ActorState.Hit)
-					break;
+					// 대답이 hit인지 stay인지 판단
+					if (p1.getState() != ActorState.Hit && p2.getState() != ActorState.Hit)
+						break;
+				}
+
+				DealerCard();    // 플레이어 선택이 끝난 후 딜러 룰대로 카드 뽑은 후 버스트 판단
+
+				// 딜러랑 비교, 결과 출력
+				Winner(SelectTopPlayers());
+
+				if (p1.getCoin() == 0 || p2.getCoin() == 0)		// 만약 한 라운드가 끝나고 보유 코인이 0이면 게임 바로 종료
+					break checkcoin;
 			}
-
-			DealerCard();	// 플레이어 선택이 끝난 후 딜러 룰대로 카드 뽑은 후 버스트 판단
-
-			// 딜러랑 비교, 결과 출력
-			Winner(SelectTopPlayers());
 		}
 	}
 
@@ -175,6 +181,41 @@ class Game  								//전체 게임 관할
 			p1.AddCard(carddeck.getCard());		// 초기 카드들 배분
 			p2.AddCard(carddeck.getCard());
 			dealer.AddCard(carddeck.getCard());
+		}
+	}
+
+	void MiniGameStart() throws InterruptedException, IOException
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("블랙잭 게임에 오신 것을 환영합니다!");
+		second();
+		System.out.println("룰 설명을 들으시겠습니까? (Y/N)");
+		while(true)
+		{
+			String rule = sc.next();
+			if (rule.equals("Y") || rule.equals("y"))
+			{
+				System.out.println("각 플레이어에게 주어진 코인은 1000코인입니다.\n"
+						+ "인원은 플레이어 둘과 딜러로 구성되어 있습니다.\n"
+						+ "카드를 한 장 더 받으려면 Hit, 더 받지 않으려면 Stay를 고르세요.\n"
+						+ "카드의 합은 21을 넘기지 않고 딜러의 합보다 커야 합니다.\n"
+						+ "21이 넘어가면 버스트, 즉 패배하니까 카드를 더 뽑을지 조심해서 선택하세요.\n"
+						+ "살아있는 플레이어 중에서는 카드의 합이 큰 사람이 승리합니다.\n"
+						+ "총 5번의 라운드로 이루어져 있고, 5라운드 후 코인의 수가 많은 사람이 최종승리합니다.\n");
+				System.out.println("게임을 시작하려면 Enter를 눌러주세요.");
+				enter();
+				System.out.println("게임을 시작합니다.");
+				break;
+			}
+			else if (rule.equals("N") || rule.equals("n"))
+			{
+				System.out.println("게임을 시작합니다.");
+				break;
+			}
+			else
+			{
+				System.out.println("Y 혹은 N을 선택해주세요");
+			}
 		}
 	}
 
@@ -391,9 +432,9 @@ class Game  								//전체 게임 관할
 		boolean p2win = false;
 
 		System.out.println("");
-		System.out.print("최종 결과: ");
 		System.out.println("블랙잭 끝");
-		System.out.printf("%s 코인: %d\n %s 코인: %d\n",p1.getName(), p1.getCoin(), p2.getName(), p2.getCoin());
+		System.out.print("최종 결과: ");
+		System.out.printf("%s 코인: %d, %s 코인: %d\n",p1.getName(), p1.getCoin(), p2.getName(), p2.getCoin());
 
 		if (p1.getCoin() > p2.getCoin())
 		{
@@ -409,7 +450,13 @@ class Game  								//전체 게임 관할
 		{
 			System.out.println("무승부");
 		}
+	}
 
+	public static void second() throws InterruptedException {
+		TimeUnit.SECONDS.sleep(1);
+	}
+	public static void enter() throws IOException{
+		System.in.read();
 	}
 }
 
