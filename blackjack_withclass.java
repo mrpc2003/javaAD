@@ -1,38 +1,43 @@
 package AD_Project;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class blackjack_withclass
 {
-	public static void Bstart(String p1name, String p2name)
+	public static void Bstart(String p1name, String p2name) throws InterruptedException, IOException
 	{
+		String p1_name = p1name;
+		String p2_name = p2name;
+		Game blackjack = new Game(p1_name, p2_name);
 
-		Game blackjack = new Game(p1name, p2name);
+		blackjack.init();	// °ÔÀÓ Ã³À½¿¡ ÇÑ¹ø¸¸ ½ÇÇàÇÏ´Â ³»¿ë ½ÇÇà
 
-		blackjack.init();	// ê²Œì„ ì²˜ìŒì— í•œë²ˆë§Œ ì‹¤í–‰í•˜ëŠ” ë‚´ìš© ì‹¤í–‰
+		blackjack.play();	// ºí·¢Àè °ÔÀÓ 5¹ø µ¹±â
 
-		blackjack.play();	// ë¸”ë™ì­ ê²Œì„ 5ë²ˆ ëŒê¸°
-
-		blackjack.end();	// ê²Œì„ ì¢…ë£Œ í›„ ë©”ì¸ ê²Œì„ì— ë‚´ìš© ë³´ë‚´ê¸°
+		blackjack.end();	// °ÔÀÓ Á¾·á ÈÄ ¸ŞÀÎ °ÔÀÓ¿¡ ³»¿ë º¸³»±â
 	}
 }
 
-enum ActorState {Hit, Stay, Bust}	// í”Œë ˆì´ì–´, ë”œëŸ¬ì˜ ìƒíƒœ
+enum ActorState {Hit, Stay, Bust}	// ÇÃ·¹ÀÌ¾î, µô·¯ÀÇ »óÅÂ
+
+
 
 class Actor
 {
-	protected ArrayList<Integer> myCard = new ArrayList<Integer>();	// ìì‹ ì´ ê°€ì§€ê³  ìˆëŠ” ì¹´ë“œ ë±
-	private ActorState state = ActorState.Hit;	// ìƒíƒœ Hitë¡œ ì´ˆê¸°í™”
+	protected ArrayList<Integer> myCard = new ArrayList<Integer>();	// ÀÚ½ÅÀÌ °¡Áö°í ÀÖ´Â Ä«µå µ¦
+	private ActorState state = ActorState.Hit;	// »óÅÂ Hit·Î ÃÊ±âÈ­
 
 	public void AddCard(int card)
 	{
-		myCard.add(card);	// ìì‹ ì˜ ì¹´ë“œ ë±ì— ì¹´ë“œ ì¶”ê°€
+		myCard.add(card);	// ÀÚ½ÅÀÇ Ä«µå µ¦¿¡ Ä«µå Ãß°¡
 	}
 
 	ActorState getState()			{ return state; }
 	void setState(ActorState state)	{ this.state = state; }
 
-	public int getSum()		// ìì‹ ì˜ ì¹´ë“œ ë± ì¹´ë“œë“¤ í•© êµ¬í•˜ê¸°
+	public int getSum()		// ÀÚ½ÅÀÇ Ä«µå µ¦ Ä«µåµé ÇÕ ±¸ÇÏ±â
 	{
 		int sum = 0;
 		for (int i : myCard)
@@ -42,37 +47,34 @@ class Actor
 		return sum;
 	}
 
-	void showCardList()		// ì¹´ë“œ ë³´ì—¬ì£¼ê¸°, ì¹´ë“œì˜ ìˆ«ì í•© ë³´ì—¬ì£¼ê¸°
+	void showCardList()		// Ä«µå º¸¿©ÁÖ±â, Ä«µåÀÇ ¼ıÀÚ ÇÕ º¸¿©ÁÖ±â
 	{
 		for (int i : myCard)
 		{
 			System.out.printf("%2d ", i);
 		}
-		System.out.printf("í•©: %d", getSum());
+		System.out.printf("ÇÕ: %d", getSum());
 		System.out.println("");
 	}
 
-	void reset()				// ìƒíƒœì™€ ì¹´ë“œ ë± ì´ˆê¸°í™” (í•œ íŒ ëë‚˜ë©´ ì‹¤í–‰)
+	void reset()				// »óÅÂ¿Í Ä«µå µ¦ ÃÊ±âÈ­ (ÇÑ ÆÇ ³¡³ª¸é ½ÇÇà)
 	{
-		state = ActorState.Hit;	// ìƒíƒœ ì´ˆê¸°í™”
-		myCard.clear();			// ë± ì´ˆê¸°í™”
+		state = ActorState.Hit;	// »óÅÂ ÃÊ±âÈ­
+		myCard.clear();			// µ¦ ÃÊ±âÈ­
 	}
 }
 
 class Player extends Actor
 {
-	private int coin = 0;		// ë³´ìœ  ì½”ì¸
-	private int betCoin = 0;	// ë² íŒ…í•  ì½”ì¸
-	private String name;		// í”Œë ˆì´ì–´ì˜ ì´ë¦„
+	private int coin = 0;		// º¸À¯ ÄÚÀÎ
+	private int betCoin = 0;	// º£ÆÃÇÒ ÄÚÀÎ
+	private String name;		// ÇÃ·¹ÀÌ¾îÀÇ ÀÌ¸§
 
 
-	Player(String name)
-	{
-		this.name = name;
-	}
+	Player()	{}
 
 	String getName()				{ return this.name; }
-
+	void setName(String name)		{ this.name = name; }
 	int getCoin()					{ return this.coin; }
 	void setCoin(int coin)			{ this.coin = coin;	}
 
@@ -83,14 +85,14 @@ class Player extends Actor
 
 class Dealer extends Actor
 {
-	private int sum = 0;		// ë”œëŸ¬ ì¹´ë“œì˜ í•©
+	private int sum = 0;		// µô·¯ Ä«µåÀÇ ÇÕ
 
 	Dealer() {}
 
 	void setSum(Integer sum)		{ this.sum = sum;}
 
 	@Override
-	void showCardList()			// ë”œëŸ¬ëŠ” ì²˜ìŒì— ì¹´ë“œë¥¼ í•œ ì¥ë§Œ ë³´ì—¬ì£¼ë¯€ë¡œ Actorì—ì„œ ì˜¤ë²„ë¼ì´ë”©
+	void showCardList()			// µô·¯´Â Ã³À½¿¡ Ä«µå¸¦ ÇÑ Àå¸¸ º¸¿©ÁÖ¹Ç·Î Actor¿¡¼­ ¿À¹ö¶óÀÌµù
 	{
 		System.out.printf("%2d, %s", myCard.get(0), "*");
 	}
@@ -98,15 +100,18 @@ class Dealer extends Actor
 
 }
 
-class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
+class Game  								//ÀüÃ¼ °ÔÀÓ °üÇÒ
 {
+	public static boolean p1win = false;
+	public static boolean p2win = false;
 	String Bp1name;
 	String Bp2name;
-	Player p1 = new Player(Bp1name);			// ì´ë¦„ê³¼ í•¨ê»˜ p1 ì§€ì • (ë©”ì¸ ê²Œì„ì—ì„œì˜ ì´ë¦„ ë°›ì•„ì˜¤ë„ë¡)
-	Player p2 = new Player(Bp2name);			// ì´ë¦„ê³¼ í•¨ê»˜ p2 ì§€ì •
-	Dealer dealer = new Dealer();			// ë”œëŸ¬ ìƒì„±
-	CardDeck carddeck = new CardDeck();		// ì „ì²´ ì¹´ë“œ ë± ìƒì„±
-	int playCount = 0;						// ëª‡ ë¼ìš´ë“œ ëŒì§€ ì •í•˜ëŠ” ë³€ìˆ˜
+
+	Player p1 = new Player();				// p1 ì§?? • (ë©”ì¸ ê²Œì„?—?„œ?˜ ?´ë¦? ë°›ì•„?˜¤?„ë¡?)
+	Player p2 = new Player();				// p2 ì§?? •
+	Dealer dealer = new Dealer();			// ?”œ?Ÿ¬ ?ƒ?„±
+	CardDeck carddeck = new CardDeck();		// ? „ì²? ì¹´ë“œ ?± ?ƒ?„±
+	int playCount = 0;						// ëª? ?¼?š´?“œ ?Œì§? ? •?•˜?Š” ë³??ˆ˜
 
 	Game(String p1name, String p2name)
 	{
@@ -114,48 +119,55 @@ class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
 		this.Bp2name = p2name;
 	}
 
-	// ----------------------------------------------- ê²Œì„ ì‹¤í–‰ ë¶€ë¶„ ->
-	public void init()
+	// ----------------------------------------------- °ÔÀÓ ½ÇÇà ºÎºĞ ->
+	public void init() throws InterruptedException, IOException
 	{
+		p1.setName(Bp1name);				// ?´ë¦? ?ƒ?„±
+		p2.setName(Bp2name);
 		playCount = 5;
 		p1.setCoin(1000);
-		p2.setCoin(1000);					//í”Œë ˆì´ì–´ ëˆ
-		//ì¶œë ¥ ëª‡ê°œ í•´ì„œ ê¾¸ë¯¸ê¸°(íƒ€ì´í‹€, ë£° ì„¤ëª…, ë“±ë“±)
+		p2.setCoin(1000);					//ÇÃ·¹ÀÌ¾î µ·
+
+		MiniGameStart();
+		//Ãâ·Â ¸î°³ ÇØ¼­ ²Ù¹Ì±â(Å¸ÀÌÆ², ·ê ¼³¸í, µîµî)
 	}
 	public void play()
 	{
-		for (int i = 0; i<playCount; i++)
-		{
-			//í”Œë ˆì´ì–´, ë”œëŸ¬ ë¦¬ì…‹ í›„ ë¼ìš´ë“œ ì‹œì‘
-			RoundStart(i+1);
+		checkcoin :while(true) {
+			for (int i = 0; i < playCount; i++) {
+				//ÇÃ·¹ÀÌ¾î, µô·¯ ¸®¼Â ÈÄ ¶ó¿îµå ½ÃÀÛ
+				RoundStart(i + 1);
 
-			// ëˆ ê±¸ê¸°
-			BetCoin();
+				// µ· °É±â
+				BetCoin();
 
-			// ì¹´ë“œ ì„ê¸°
-			carddeck.shuffle();
+				// Ä«µå ¼¯±â
+				carddeck.shuffle();
 
-			// ì²˜ìŒì— ì¹´ë“œ ë‚˜ëˆ ì£¼ê¸°
-			giveInitialCard();
+				// Ã³À½¿¡ Ä«µå ³ª´²ÁÖ±â
+				giveInitialCard();
 
-			// 21 íŒë‹¨
-			while(true)
-			{
-				// ì¹´ë“œë“¤ê³¼ í•© ë³´ì—¬ì£¼ê¸°(ì´ ì•ˆì— showcardlistìˆìŒ)
-				displayGame();
+				// 21 ÆÇ´Ü
+				while (true) {
+					// Ä«µåµé°ú ÇÕ º¸¿©ÁÖ±â(ÀÌ ¾È¿¡ showcardlistÀÖÀ½)
+					displayGame();
 
-				//hit stayë¬»ê¸°
-				HitOrStay();
+					//hit stay¹¯±â
+					HitOrStay();
 
-				// ëŒ€ë‹µì´ hitì¸ì§€ stayì¸ì§€ íŒë‹¨
-				if (p1.getState() != ActorState.Hit && p2.getState() != ActorState.Hit)
-					break;
+					// ´ë´äÀÌ hitÀÎÁö stayÀÎÁö ÆÇ´Ü
+					if (p1.getState() != ActorState.Hit && p2.getState() != ActorState.Hit)
+						break;
+				}
+
+				DealerCard();    // ÇÃ·¹ÀÌ¾î ¼±ÅÃÀÌ ³¡³­ ÈÄ µô·¯ ·ê´ë·Î Ä«µå »ÌÀº ÈÄ ¹ö½ºÆ® ÆÇ´Ü
+
+				// µô·¯¶û ºñ±³, °á°ú Ãâ·Â
+				Winner(SelectTopPlayers());
+
+				if (p1.getCoin() == 0 || p2.getCoin() == 0)		// ¸¸¾à ÇÑ ¶ó¿îµå°¡ ³¡³ª°í º¸À¯ ÄÚÀÎÀÌ 0ÀÌ¸é °ÔÀÓ ¹Ù·Î Á¾·á
+					break checkcoin;
 			}
-
-			DealerCard();	// í”Œë ˆì´ì–´ ì„ íƒì´ ëë‚œ í›„ ë”œëŸ¬ ë£°ëŒ€ë¡œ ì¹´ë“œ ë½‘ì€ í›„ ë²„ìŠ¤íŠ¸ íŒë‹¨
-
-			// ë”œëŸ¬ë‘ ë¹„êµ, ê²°ê³¼ ì¶œë ¥
-			Winner(SelectTopPlayers());
 		}
 	}
 
@@ -163,77 +175,112 @@ class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
 	{
 		blackjackResult();
 
-		//ë©”ì¸ ê²Œì„ì´ë‘ ì—°ê²°í•˜ê¸°(ìŠ¹íŒ¨ì— ë”°ë¼ ëˆ ì§€ê¸‰)
+		//¸ŞÀÎ °ÔÀÓÀÌ¶û ¿¬°áÇÏ±â(½ÂÆĞ¿¡ µû¶ó µ· Áö±Ş)
 	}
 
-// --------------------------------------------------  <- ê²Œì„ ì‹¤í–‰ ë¶€ë¶„
+// --------------------------------------------------  <- °ÔÀÓ ½ÇÇà ºÎºĞ
 
 	private void giveInitialCard()
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			p1.AddCard(carddeck.getCard());		// ì´ˆê¸° ì¹´ë“œë“¤ ë°°ë¶„
+			p1.AddCard(carddeck.getCard());		// ÃÊ±â Ä«µåµé ¹èºĞ
 			p2.AddCard(carddeck.getCard());
 			dealer.AddCard(carddeck.getCard());
 		}
 	}
 
+	void MiniGameStart() throws InterruptedException, IOException
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("ºí·¢Àè °ÔÀÓ¿¡ ¿À½Å °ÍÀ» È¯¿µÇÕ´Ï´Ù!");
+		second();
+		System.out.println("·ê ¼³¸íÀ» µéÀ¸½Ã°Ú½À´Ï±î? (Y/N)");
+		while(true)
+		{
+			String rule = sc.next();
+			if (rule.equals("Y") || rule.equals("y"))
+			{
+				System.out.println("°¢ ÇÃ·¹ÀÌ¾î¿¡°Ô ÁÖ¾îÁø ÄÚÀÎÀº 1000ÄÚÀÎÀÔ´Ï´Ù.\n"
+						+ "ÀÎ¿øÀº ÇÃ·¹ÀÌ¾î µÑ°ú µô·¯·Î ±¸¼ºµÇ¾î ÀÖ½À´Ï´Ù.\n"
+						+ "Ä«µå¸¦ ÇÑ Àå ´õ ¹ŞÀ¸·Á¸é Hit, ´õ ¹ŞÁö ¾ÊÀ¸·Á¸é Stay¸¦ °í¸£¼¼¿ä.\n"
+						+ "Ä«µåÀÇ ÇÕÀº 21À» ³Ñ±âÁö ¾Ê°í µô·¯ÀÇ ÇÕº¸´Ù Ä¿¾ß ÇÕ´Ï´Ù.\n"
+						+ "21ÀÌ ³Ñ¾î°¡¸é ¹ö½ºÆ®, Áï ÆĞ¹èÇÏ´Ï±î Ä«µå¸¦ ´õ »ÌÀ»Áö Á¶½ÉÇØ¼­ ¼±ÅÃÇÏ¼¼¿ä.\n"
+						+ "»ì¾ÆÀÖ´Â ÇÃ·¹ÀÌ¾î Áß¿¡¼­´Â Ä«µåÀÇ ÇÕÀÌ Å« »ç¶÷ÀÌ ½Â¸®ÇÕ´Ï´Ù.\n"
+						+ "ÃÑ 5¹øÀÇ ¶ó¿îµå·Î ÀÌ·ç¾îÁ® ÀÖ°í, 5¶ó¿îµå ÈÄ ÄÚÀÎÀÇ ¼ö°¡ ¸¹Àº »ç¶÷ÀÌ ÃÖÁ¾½Â¸®ÇÕ´Ï´Ù.\n");
+				System.out.println("°ÔÀÓÀ» ½ÃÀÛÇÏ·Á¸é Enter¸¦ ´­·¯ÁÖ¼¼¿ä.");
+				enter();
+				System.out.println("°ÔÀÓÀ» ½ÃÀÛÇÕ´Ï´Ù.");
+				break;
+			}
+			else if (rule.equals("N") || rule.equals("n"))
+			{
+				System.out.println("°ÔÀÓÀ» ½ÃÀÛÇÕ´Ï´Ù.");
+				break;
+			}
+			else
+			{
+				System.out.println("Y È¤Àº NÀ» ¼±ÅÃÇØÁÖ¼¼¿ä");
+			}
+		}
+	}
+
 	void RoundStart(int round)
 	{
-		p1.reset();			//ì´ˆê¸°í™”
+		p1.reset();			//ÃÊ±âÈ­
 		p2.reset();
 		dealer.reset();
 		System.out.println("-------------------------------------");
-		System.out.printf("%dë²ˆì§¸ ë¼ìš´ë“œë¥¼ ì‹œì‘í•©ë‹ˆë‹¤.\n", round);		// ë¼ìš´ë“œ í‘œì‹œ
+		System.out.printf("%d¹øÂ° ¶ó¿îµå¸¦ ½ÃÀÛÇÕ´Ï´Ù.\n", round);		// ¶ó¿îµå Ç¥½Ã
 	}
 
 	void displayGame()
 	{
-		System.out.printf("%s ì¹´ë“œ : ", p1.getName());
-		p1.showCardList();			// ì¹´ë“œë“¤ ë‚˜ì—´, ì¹´ë“œì˜ í•© ë³´ì—¬ì£¼ê¸°
-		System.out.printf("%s ì¹´ë“œ : ", p2.getName());
+		System.out.printf("%s Ä«µå : ", p1.getName());
+		p1.showCardList();			// Ä«µåµé ³ª¿­, Ä«µåÀÇ ÇÕ º¸¿©ÁÖ±â
+		System.out.printf("%s Ä«µå : ", p2.getName());
 		p2.showCardList();			// "
-		System.out.print("ë”œëŸ¬ ì¹´ë“œ: ");
-		dealer.showCardList();		// ë”œëŸ¬ëŠ” ì˜¤ë²„ë¼ì´ë”©í•´ì„œ ì²« ì¹´ë“œë§Œ ë³´ì—¬ì¤Œ
+		System.out.print("µô·¯ Ä«µå: ");
+		dealer.showCardList();		// µô·¯´Â ¿À¹ö¶óÀÌµùÇØ¼­ Ã¹ Ä«µå¸¸ º¸¿©ÁÜ
 		System.out.println();
 	}
 
-	void HitOrStay()	// hit stay ê²°ì •í•˜ëŠ” ë©”ì†Œë“œ
+	void HitOrStay()	// hit stay °áÁ¤ÇÏ´Â ¸Ş¼Òµå
 	{
 		Scanner sc = new Scanner(System.in);
 
-		if (p1.getState() == ActorState.Hit)	//ì €ë²ˆ ì…ë ¥ hitì¸ì§€ í™•ì¸(ì²˜ìŒ ìƒíƒœëŠ” hitì´ë¯€ë¡œ ì‹¤í–‰ë¨)
+		if (p1.getState() == ActorState.Hit)	//Àú¹ø ÀÔ·Â hitÀÎÁö È®ÀÎ(Ã³À½ »óÅÂ´Â hitÀÌ¹Ç·Î ½ÇÇàµÊ)
 		{
 			while(true)
 			{
 				System.out.printf("%s, Hit or Stay?(H/S)\n", p1.getName());
 				String input = sc.next();
-				if (input.equals("H")||input.equals("h"))	// ì…ë ¥ì´ hitë©´
+				if (input.equals("H")||input.equals("h"))	// ÀÔ·ÂÀÌ hit¸é
 				{
-					p1.setState(ActorState.Hit);			// ìƒíƒœ hitë¡œ ë°”ê¾¸ê³ 
-					p1.AddCard(carddeck.getCard());			// ì¹´ë“œ ë”í•˜ê³ 
-					if (p1.getSum() > 21)					// í•©ì´ 21ì´ ë„˜ìœ¼ë©´
+					p1.setState(ActorState.Hit);			// »óÅÂ hit·Î ¹Ù²Ù°í
+					p1.AddCard(carddeck.getCard());			// Ä«µå ´õÇÏ°í
+					if (p1.getSum() > 21)					// ÇÕÀÌ 21ÀÌ ³ÑÀ¸¸é
 					{
-						p1.setState(ActorState.Bust);		// ìƒíƒœ bust
-						System.out.printf("%s ë²„ìŠ¤íŠ¸\n", p1.getName());
+						p1.setState(ActorState.Bust);		// »óÅÂ bust
+						System.out.printf("%s ¹ö½ºÆ®\n", p1.getName());
 					}
 					break;
 				}
-				else if (input.equals("S")||input.equals("s"))	// ì…ë ¥ì´ stayë©´
+				else if (input.equals("S")||input.equals("s"))	// ÀÔ·ÂÀÌ stay¸é
 				{
-					p1.setState(ActorState.Stay);				// ìƒíƒœ stay
+					p1.setState(ActorState.Stay);				// »óÅÂ stay
 					break;
 				}
 				else
 				{
-					System.out.println("ì˜ëª» ì…ë ¥í–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.");
+					System.out.println("Àß¸ø ÀÔ·ÂÇß½À´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä.");
 				}
 			}
 		}
 
 		if (p2.getState() == ActorState.Hit)
 		{
-			while(true)		// p1 ì½”ë“œì™€ ê°™ìŒ(ë‚˜ì¤‘ì— ì‹œê°„ì´ ìˆìœ¼ë©´ ë‘˜ì´ ë©”ì†Œë“œ í•˜ë‚˜ë¡œ í•©ì¹˜ê¸°)
+			while(true)		// p1 ÄÚµå¿Í °°À½(³ªÁß¿¡ ½Ã°£ÀÌ ÀÖÀ¸¸é µÑÀÌ ¸Ş¼Òµå ÇÏ³ª·Î ÇÕÄ¡±â)
 			{
 				System.out.printf("%s, Hit or Stay?(H/S)\n", p2.getName());
 				String input = sc.next();
@@ -244,7 +291,7 @@ class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
 					if (p2.getSum() > 21)
 					{
 						p2.setState(ActorState.Bust);
-						System.out.printf("%s ë²„ìŠ¤íŠ¸\n", p2.getName());
+						System.out.printf("%s ¹ö½ºÆ®\n", p2.getName());
 					}
 					break;
 				}
@@ -255,76 +302,76 @@ class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
 				}
 				else
 				{
-					System.out.println("ì˜ëª» ì…ë ¥í–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.");
+					System.out.println("Àß¸ø ÀÔ·ÂÇß½À´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä.");
 				}
 			}
 		}
 	}
 
-	void DealerCard()	// ë”œëŸ¬ ì¹´ë“œ ë©”ì†Œë“œ
+	void DealerCard()	// µô·¯ Ä«µå ¸Ş¼Òµå
 	{
-		// 17 ì´ìƒì´ ë  ë•Œê¹Œì§€ ì¹´ë“œë¥¼ ë½‘ëŠ”ë‹¤.
+		// 17 ÀÌ»óÀÌ µÉ ¶§±îÁö Ä«µå¸¦ »Ì´Â´Ù.
 		while(dealer.getSum() < 17)
 		{
-			dealer.AddCard(carddeck.getCard());	// ì¹´ë“œ ë±ì—ì„œ í•˜ë‚˜ ë½‘ì•„ì˜¨ë‹¤.
+			dealer.AddCard(carddeck.getCard());	// Ä«µå µ¦¿¡¼­ ÇÏ³ª »Ì¾Æ¿Â´Ù.
 		}
 
 		if (dealer.getSum() > 21)
 		{
-			dealer.setState(ActorState.Bust);					// 21 ì´ìƒì´ë©´ ë²„ìŠ¤íŠ¸
-			System.out.println("ë”œëŸ¬ ë²„ìŠ¤íŠ¸");
+			dealer.setState(ActorState.Bust);					// 21 ÀÌ»óÀÌ¸é ¹ö½ºÆ®
+			System.out.println("µô·¯ ¹ö½ºÆ®");
 		}
 		else
 		{
-			System.out.printf("ë”œëŸ¬: %d\n", dealer.getSum());		// 21 ì´í•˜ë©´ ì¶œë ¥
+			System.out.printf("µô·¯: %d\n", dealer.getSum());		// 21 ÀÌÇÏ¸é Ãâ·Â
 		}
 	}
 
-	ArrayList<Player> SelectTopPlayers()	// ìŠ¹ì íŒë‹¨ ë©”ì†Œë“œ
+	ArrayList<Player> SelectTopPlayers()	// ½ÂÀÚ ÆÇ´Ü ¸Ş¼Òµå
 	{
-		ArrayList<Player> topPlayers = new ArrayList<Player>();	// ê°€ì¥ ë†’ì€ í”Œë ˆì´ì–´ ë‹´ëŠ” ë¦¬ìŠ¤íŠ¸
-		int topScore = 0;										// ì¹´ë“œ í•© ì¤‘ ìµœëŒ€ì¸ ìˆ˜ ë‹´ì•„ë†“ëŠ” ë³€ìˆ˜
+		ArrayList<Player> topPlayers = new ArrayList<Player>();	// °¡Àå ³ôÀº ÇÃ·¹ÀÌ¾î ´ã´Â ¸®½ºÆ®
+		int topScore = 0;										// Ä«µå ÇÕ Áß ÃÖ´ëÀÎ ¼ö ´ã¾Æ³õ´Â º¯¼ö
 
-		if (p1.getState() != ActorState.Bust)	// ë²„ìŠ¤íŠ¸ê°€ ì•„ë‹ˆë©´
+		if (p1.getState() != ActorState.Bust)	// ¹ö½ºÆ®°¡ ¾Æ´Ï¸é
 		{
-			topScore = p1.getSum();				// ìµœëŒ€ ì ìˆ˜ì— ë‹´ê³ 
-			topPlayers.add(p1);					// ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
+			topScore = p1.getSum();				// ÃÖ´ë Á¡¼ö¿¡ ´ã°í
+			topPlayers.add(p1);					// ¸®½ºÆ®¿¡ Ãß°¡
 		}
 
 		if (p2.getState() != ActorState.Bust)
 		{
-			if (p2.getSum() >= topScore)		// p1ë³´ë‹¤ p2ì˜ í•©ì´ í¬ê±°ë‚˜ ê°™ìœ¼ë©´
+			if (p2.getSum() >= topScore)		// p1º¸´Ù p2ÀÇ ÇÕÀÌ Å©°Å³ª °°À¸¸é
 			{
-				if (p2.getSum() > topScore)		// ë§Œì•½ í¬ë©´
+				if (p2.getSum() > topScore)		// ¸¸¾à Å©¸é
 				{
-					topPlayers.clear();			// ëŒ€ì²´í•˜ê¸°
+					topPlayers.clear();			// ´ëÃ¼ÇÏ±â
 				}
-				topScore = p2.getSum();			// ê°™ìœ¼ë©´ topScoreëŠ” ê·¸ëŒ€ë¡œì¼ ê²ƒì´ê³ 
-				topPlayers.add(p2);				// topPlayersì— p2 ì¶”ê°€
+				topScore = p2.getSum();			// °°À¸¸é topScore´Â ±×´ë·ÎÀÏ °ÍÀÌ°í
+				topPlayers.add(p2);				// topPlayers¿¡ p2 Ãß°¡
 			}
 		}
 
 		return topPlayers;
 	}
 
-	void BetCoin()	// ì½”ì¸ ë² íŒ…í•˜ëŠ” ë©”ì†Œë“œ
+	void BetCoin()	// ÄÚÀÎ º£ÆÃÇÏ´Â ¸Ş¼Òµå
 	{
 		Scanner sc = new Scanner(System.in);
 		boolean check = true;
 
 		while(check)
 		{
-			System.out.printf("%s ë³´ìœ  ì½”ì¸: %d\n", p1.getName(), p1.getCoin());
-			System.out.printf("%s ë² íŒ…í•  ì½”ì¸: ", p1.getName());
+			System.out.printf("%s º¸À¯ ÄÚÀÎ: %d\n", p1.getName(), p1.getCoin());
+			System.out.printf("%s º£ÆÃÇÒ ÄÚÀÎ: ", p1.getName());
 			while (!sc.hasNextInt())
 			{
 				sc.next();
-				System.out.println("ìˆ«ìë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+				System.out.println("¼ıÀÚ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
 			}
 			int betCoin = sc.nextInt();
-			if (betCoin > p1.getCoin())			// ë³´ìœ  ì½”ì¸ ì´ìƒ ë² íŒ… ë¶ˆê°€
+			if (betCoin > p1.getCoin())			// º¸À¯ ÄÚÀÎ ÀÌ»ó º£ÆÃ ºÒ°¡
 			{
-				System.out.println("ì½”ì¸ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+				System.out.println("ÄÚÀÎÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
 			}
 			else
 			{
@@ -338,17 +385,17 @@ class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
 
 		while(check)
 		{
-			System.out.printf("%s ë³´ìœ  ì½”ì¸: %d\n", p2.getName(), p2.getCoin());
-			System.out.printf("%s ë² íŒ…í•  ì½”ì¸: ", p2.getName());
-			while (!sc.hasNextInt())					// ë² íŒ…ì½”ì¸ì´ ìˆ«ìê°€ ì•„ë‹ˆë©´ ë‹¤ì‹œ ì…ë ¥í•˜ë¼ê³  ì§€ì‹œ
+			System.out.printf("%s º¸À¯ ÄÚÀÎ: %d\n", p2.getName(), p2.getCoin());
+			System.out.printf("%s º£ÆÃÇÒ ÄÚÀÎ: ", p2.getName());
+			while (!sc.hasNextInt())					// º£ÆÃÄÚÀÎÀÌ ¼ıÀÚ°¡ ¾Æ´Ï¸é ´Ù½Ã ÀÔ·ÂÇÏ¶ó°í Áö½Ã
 			{
 				sc.next();
-				System.out.println("ìˆ«ìë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+				System.out.println("¼ıÀÚ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
 			}
 			int betCoin = sc.nextInt();
 			if (betCoin > p2.getCoin())
 			{
-				System.out.println("ì½”ì¸ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+				System.out.println("ÄÚÀÎÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
 			}
 			else
 			{
@@ -362,54 +409,59 @@ class Game  								//ì „ì²´ ê²Œì„ ê´€í• 
 	{
 		if (topPlayers.size() == 0)
 		{
-			System.out.println("ë”œëŸ¬ ìŠ¹");
+			System.out.println("µô·¯ ½Â");
 			return;
 		}
 
 		for (Player p : topPlayers)
 		{
-			// ë”œëŸ¬ ë²„ìŠ¤íŠ¸ì´ê±°ë‚˜ í”Œë ˆì´ì–´ë³´ë‹¤ ì ìœ¼ë©´ í”Œë ˆì´ì–´ ìŠ¹
+			// µô·¯ ¹ö½ºÆ®ÀÌ°Å³ª ÇÃ·¹ÀÌ¾îº¸´Ù ÀûÀ¸¸é ÇÃ·¹ÀÌ¾î ½Â
 			if (dealer.getState() == ActorState.Bust || p.getSum() > dealer.getSum())
 			{
 				p.setCoin(p.getCoin() + (2 * p.getBetCoin()));
-				System.out.println(p.getName() + " ìŠ¹");
+				System.out.println(p.getName() + " ½Â");
 			}
-			// ê°™ìœ¼ë©´ ë¬´ìŠ¹ë¶€
+			// °°À¸¸é ¹«½ÂºÎ
 			else if (p.getSum() == dealer.getSum())
 			{
 				p.setCoin(p.getCoin() + p.getBetCoin());
-				System.out.println(p.getName() + " ë¬´ìŠ¹ë¶€");
+				System.out.println(p.getName() + " ¹«½ÂºÎ");
 			}
 			else
-				System.out.println("ë”œëŸ¬ ìŠ¹");
+				System.out.println("µô·¯ ½Â");
 		}
 	}
 
 	void blackjackResult()
 	{
-		boolean p1win = false;
-		boolean p2win = false;
+
 
 		System.out.println("");
-		System.out.print("ìµœì¢… ê²°ê³¼: ");
-		System.out.println("ë¸”ë™ì­ ë");
-		System.out.printf("%s ì½”ì¸: %d\n %s ì½”ì¸: %d\n",p1.getName(), p1.getCoin(), p2.getName(), p2.getCoin());
+		System.out.println("ºí·¢Àè ³¡");
+		System.out.print("ÃÖÁ¾ °á°ú: ");
+		System.out.printf("%s ÄÚÀÎ: %d, %s ÄÚÀÎ: %d\n",p1.getName(), p1.getCoin(), p2.getName(), p2.getCoin());
 
 		if (p1.getCoin() > p2.getCoin())
 		{
-			System.out.printf("%s ìµœì¢… ìŠ¹ë¦¬", p1.getName());
+			System.out.printf("%s ÃÖÁ¾ ½Â¸®", p1.getName());
 			p1win = true;
 		}
 		else if (p1.getCoin() < p2.getCoin())
 		{
-			System.out.printf("%s ìµœì¢… ìŠ¹ë¦¬", p2.getName());
+			System.out.printf("%s ÃÖÁ¾ ½Â¸®", p2.getName());
 			p2win = true;
 		}
 		else
 		{
-			System.out.println("ë¬´ìŠ¹ë¶€");
+			System.out.println("¹«½ÂºÎ");
 		}
+	}
 
+	public static void second() throws InterruptedException {
+		TimeUnit.SECONDS.sleep(1);
+	}
+	public static void enter() throws IOException{
+		System.in.read();
 	}
 }
 

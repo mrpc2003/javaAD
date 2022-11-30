@@ -59,6 +59,7 @@ class GamePlay {
                     System.out.println("잘못 입력하셨습니다. 게임을 진행하시려면 y를 입력해주세요.");
                 }
             }
+        } else if(ans.equals("n")){
         } else {
             System.out.println("y나 n으로 입력해주십시오.");
             explain();
@@ -398,6 +399,7 @@ class Ghost_move {
 }
 
 class oriented {
+    public static boolean result;
     public static void start(String Player1, String Player2) {
 //        mainGameConnect mg = new mainGameConnect();
         mainGameConnect.setP1name(Player1);
@@ -409,7 +411,6 @@ class oriented {
         game.explain();
         game.GameSetting();
         b.getBoard();
-        boolean result;
         boolean cnt = true;
         while(cnt) {
             g.Move();
