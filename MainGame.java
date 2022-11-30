@@ -305,6 +305,8 @@ public class MainGame {
             winnerScoreUp(player2);
             player1.isMiniGame = false;
             player2.isMiniGame = false;
+            player1.isChance = false;
+            player2.isChance = false;
         }
         else if(player2.isWin){ // 플레이어 2가 승리했을 경우
             System.out.println(player2.name + "님이 승리하셨습니다.");
@@ -312,12 +314,16 @@ public class MainGame {
             winnerScoreUp(player2);
             player1.isMiniGame = false;
             player2.isMiniGame = false;
+            player1.isChance = false;
+            player2.isChance = false;
         } else { // 무승부일 경우
             System.out.println("무승부입니다.");
             winnerScoreUp(player1);
             winnerScoreUp(player2);
             player1.isMiniGame = false;
             player2.isMiniGame = false;
+            player1.isChance = false;
+            player2.isChance = false;
         }
     }
     public static void miniGame(GamePlayer p1, GamePlayer p2) throws IOException, InterruptedException {
