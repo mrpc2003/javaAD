@@ -170,11 +170,9 @@ class Game  								//전체 게임 관할
 			}
 		}
 	}
-
 	public void end()
 	{
 		blackjackResult();
-
 		//메인 게임이랑 연결하기(승패에 따라 돈 지급)
 	}
 
@@ -434,8 +432,6 @@ class Game  								//전체 게임 관할
 
 	void blackjackResult()
 	{
-
-
 		System.out.println("");
 		System.out.println("블랙잭 끝");
 		System.out.print("최종 결과: ");
@@ -456,7 +452,6 @@ class Game  								//전체 게임 관할
 			System.out.println("무승부");
 		}
 	}
-
 	public static void second() throws InterruptedException {
 		TimeUnit.SECONDS.sleep(1);
 	}
@@ -464,19 +459,15 @@ class Game  								//전체 게임 관할
 		System.in.read();
 	}
 }
-
-
 class CardDeck
 {
 	ArrayList<Integer> cards = new ArrayList<Integer>();
-
 	public int getCard()
 	{
 		int firstcard = cards.get(0);
 		cards.remove(0);
 		return firstcard;
 	}
-
 	void shuffle()
 	{
 		int[] card = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
@@ -490,5 +481,3 @@ class CardDeck
 		Collections.shuffle(cards);
 	}
 }
-
-

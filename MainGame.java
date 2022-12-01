@@ -1,13 +1,10 @@
 package AD_Project;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 class MainGameBoard{
     GamePlayer p;
-
     static boolean start = false;
     static int [][] board = new int[4][4];
     int x =3, y=3;
@@ -26,17 +23,12 @@ class MainGameBoard{
     MainGameBoard(GamePlayer p){
         this.p = p;
     }
-
-
     void getboard() {
 
-//        p = new GamePlayer();
         for(int i=0; i<4; i++) {
             System.out.print(square_up);
         }
         System.out.println();
-        // 고쳐야하는 부분
-
         System.out.print(board[0][0]==1 ? square_height_Player1 : board[0][0]==2? square_height_Player2 :board[0][0]==3? square_height_2Player :square_height_m);
         System.out.print(board[0][1]==1 ? square_height_Player1 : board[0][1]==2? square_height_Player2 :board[0][1]==3? square_height_2Player :square_height_c);
         System.out.print(board[0][2]==1 ? square_height_Player1 : board[0][2]==2? square_height_Player2 :board[0][2]==3? square_height_2Player :square_height);
@@ -45,7 +37,6 @@ class MainGameBoard{
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
         }
-
         System.out.print("\n" + square_up);
         for(int i =0; i<2; i++) {
             System.out.print("       ");
@@ -55,7 +46,6 @@ class MainGameBoard{
         for(int i =0; i<2; i++) {
             System.out.print("       ");
         }
-
         System.out.println(board[1][3]==1 ? square_height_Player1 : board[1][3]==2? square_height_Player2 :board[1][3]==3? square_height_2Player :square_height_c);
         System.out.print(square_bottom);
         for(int i =0; i<2; i++) {
@@ -85,7 +75,6 @@ class MainGameBoard{
         System.out.print(board[3][1]==1 ? square_height_Player1 : (board[3][1]==2? square_height_Player2 :(board[3][1]==3? square_height_2Player :square_height)));
         System.out.print(board[3][2]==1 ? square_height_Player1 : (board[3][2]==2? square_height_Player2 :(board[3][2]==3? square_height_2Player :square_height_c)));
         System.out.println(board[3][3]==1 ? square_height_Player1 : (board[3][3]==2? square_height_Player2 :(board[3][3]==3? square_height_2Player :square_height_last)));
-
         for(int i=0; i<4; i++) {
             System.out.print(square_bottom);
         }
@@ -103,7 +92,6 @@ class MainGameBoard{
         b8 = board[2][3];
         if(cnt ==0 ){
             board[3][3] =3;
-
         } else if (cnt == 0 && dice == -1) {
             board[3][3] = 3;
             board[3][2] = 0;
@@ -171,39 +159,29 @@ class GamePlayer{
     public boolean isBackward;
     public boolean isPositionChange;
     String name; // 플레이어 이름
-    int dice, Score = 0; // 주사위 값, 점수
+    int Score = 0; // 점수
     boolean isFinish = false; // 플레이어가 도착지점에 도착했는지 확인하는 변수
     boolean isWin; // 플레이어가 승리했는지 확인하는 변수
-    int dicePosition; // 주사위를 던진 위치를 저장하는 변수
     boolean isBonus = false; // 보너스를 받았는지 확인하는 변수
     boolean isTurn = false; // 플레이어의 차례인지 확인하는 변수
     boolean isMiniGame = false; // 미니게임을 했는지 확인하는 변수
     boolean isChance = false; // 플레이어가 기회카드를 뽑았는지 확인하는 변수
     int [] playerPosition = {3,3}; // 플레이어의 위치를 저장하는 변수
-
 }
-
 public class MainGame {
     public static void main(String[] args) throws IOException, InterruptedException {
-
         GamePlayer player1 = new GamePlayer(); // 플레이어1 객체 생성
         GamePlayer player2 = new GamePlayer(); // 플레이어2 객체 생성
         MainGameBoard b1 = new MainGameBoard(player1);
         MainGameBoard b2 = new MainGameBoard(player2);
-
         MainGameBoard b; // 게임판 객체 생성
         Scanner scanner = new Scanner(System.in);
-
         System.out.print("Player 1의 이름을 입력해주세요: ");
         player1.name = scanner.nextLine();
-
         System.out.print("Player 2의 이름을 입력해주세요: ");
         player2.name = scanner.nextLine();
         System.out.println("게임을 시작합니다.");
         Thread.sleep(1000); //1초 대기
-
-
-
         System.out.println(player1.name+"은(는) ○로 표시됩니다.");
         time();
         System.out.println(player2.name+"은(는) ●로 표시됩니다.");
@@ -221,20 +199,17 @@ public class MainGame {
         System.out.println("게임판을 출력합니다.");
         time();
         b1.getboard();
-
-
         // 게임 시작
         while(true){ // 둘 중 한 명이 도착지점에 도달할 때까지 반복
             playerTurn(player1, player2,b1);
-            if(player1.isFinish == true){
+            if(player1.isFinish){
                 break;
             }
             playerTurn(player2, player1,b2);
-            if(player2.isFinish == true){
+            if(player2.isFinish){
                 break;
             }
         }
-
     }
     public static void playerTurn(GamePlayer myself, GamePlayer counterPart, MainGameBoard board) throws InterruptedException, IOException {
         System.out.println(myself.name + "의 턴 입니다.");
@@ -242,8 +217,6 @@ public class MainGame {
         time();
         board.Game(dice());
         board.getboard();
-
-        //이부분 구현해야함
         loop:
         if (myself.isChance) {
             chance(myself, counterPart, board);
@@ -272,7 +245,6 @@ public class MainGame {
         } else {
             int randomscore = (int) (Math.random() * 3) + 3;
             System.out.println("점수를 획득했습니다.");
-
             System.out.println("획득한 점수: "+randomscore);
             myself.Score += randomscore;
             System.out.println(myself.name + "의 점수: " + myself.Score);
@@ -355,10 +327,8 @@ public class MainGame {
         time(); // 1초 쉬는 메소드
         System.out.println("미니게임은 랜덤으로 실행됩니다.");
         time();
-
         // 1부터 4까지 랜덤 숫자 1개 생성
         int random = (int) (Math.random() * 4) + 1;
-
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
         if(random == 1) {
             System.out.println("Yacht Dice를 시작합니다.");
@@ -393,7 +363,6 @@ public class MainGame {
             if (Game.p1win) {
                 p1.isWin = true;
                 time();
-
             } else if (Game.p2win) {
                 p2.isWin = true;
                 time();
@@ -416,11 +385,9 @@ public class MainGame {
                 time();
             }
         }
-
     }
     public static void chance(GamePlayer myself, GamePlayer counterPart, MainGameBoard board) throws IOException, InterruptedException {
         myself.isChance = false;
-
         //랜덤으로 찬스를 실행
         //랜덤으로 불리언 값을 true로 변경
         int random = (int) (Math.random() * 5) + 1; // 진우형 꺠면 묻기
@@ -450,8 +417,6 @@ public class MainGame {
         }
         if (myself.isScoreChange) {
             scoreChange(myself, counterPart);
-//            myself.isMiniGame = false;
-//            myself.isChance = false;
         }
         if (myself.isPositionChange) {
             positionChange(myself, counterPart, board);
@@ -483,7 +448,6 @@ public class MainGame {
         int x = MainGameBoard.board[counterpart.playerPosition[0]][counterpart.playerPosition[1]];
         MainGameBoard.board[counterpart.playerPosition[0]][counterpart.playerPosition[1]] = MainGameBoard.board[myself.playerPosition[0]][myself.playerPosition[1]];
         MainGameBoard.board[myself.playerPosition[0]][myself.playerPosition[1]] =x;
-
         board.getboard();
     }
     public static void bonusScore(GamePlayer player) {

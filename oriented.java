@@ -1,22 +1,5 @@
 package AD_Project;
 import java.util.*;
-
-//class GhostGame_mainGameConnect{
-//    static String p1 = "PLAYER1";
-//    static String p2 = "PLAYER2";
-//    public void setP1name(String p1name){
-//        p1 = p1name;
-//    }
-//    public void setP2name(String p2name){
-//        p2 = p2name;
-//    }
-//    public String getP1Name(){
-//        return p1;
-//    }
-//    public String getP2name(){
-//        return p2;
-//    }
-//}
 class Entity{
     int x, y;
     Entity(int x, int y){
@@ -24,7 +7,6 @@ class Entity{
         this.y = y;
     }
 }
-
 class GoodEntity extends Entity {
     GoodEntity(int x, int y) {
         super(x, y);
@@ -67,7 +49,6 @@ class GamePlay {
     }
     void GameSetting() {
         Scanner sc = new Scanner(System	.in);
-//        mainGameConnect mg = new mainGameConnect();
         this.entities = new Entity[2][8];
         System.out.printf("%s가 레드팀, %s가 블루팀입니다!", mainGameConnect.getP1Name(), mainGameConnect.getP2Name());
         for(int i = 0;i < 2;i++) {
@@ -114,11 +95,8 @@ class GamePlay {
 class Board{
     GamePlay game;
     public static final String RESET = "\u001B[0m";
-
     public static final String FONT_RED = "\u001B[31m";
-
     public static final String FONT_BLUE = "\u001B[34m";
-
     String Ghost = ":  o  ";
     String Ghost_blue = ":  "+FONT_BLUE+"o  "+RESET;
     String Ghost_red = ":  "+FONT_RED+"o  "+RESET;
@@ -166,11 +144,9 @@ class Ghost_move {
     GamePlay game;
     static int cnt;
     int blue_bad_cnt,red_bad_cnt,red_good_cnt, blue_good_cnt;
-
     Ghost_move(GamePlay game) {
         this.game = game;
     }
-
     void Check(int c) {
         for (int i = 0; i < 8; i++) {
             if (game.entities[cnt % 2][c - 1].x == game.entities[(cnt + 1) % 2][i].x && game.entities[cnt % 2][c - 1].y == game.entities[(cnt + 1) % 2][i].y) {
@@ -198,7 +174,6 @@ class Ghost_move {
             }
         }
     }
-
     void Move() {
         Scanner sc = new Scanner(System.in);
         cnt++;
@@ -401,7 +376,6 @@ class Ghost_move {
 class oriented {
     public static boolean result;
     public static void start(String Player1, String Player2) {
-//        mainGameConnect mg = new mainGameConnect();
         mainGameConnect.setP1name(Player1);
         mainGameConnect.setP2name(Player2);
         Scanner sc = new Scanner(System.in);
