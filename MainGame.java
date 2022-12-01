@@ -357,9 +357,7 @@ public class MainGame {
         time();
 
         // 1부터 4까지 랜덤 숫자 1개 생성
-//        int random = (int) (Math.random() * 4) + 1;
-        int random = 3;
-
+        int random = (int) (Math.random() * 4) + 1;
 
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행
         if(random == 1) {
