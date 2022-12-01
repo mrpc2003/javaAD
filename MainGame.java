@@ -101,9 +101,13 @@ class MainGameBoard{
         b6 = board[0][1];
         b7 = board[1][3];
         b8 = board[2][3];
-        if(cnt ==0){
+        if(cnt ==0 ){
             board[3][3] =3;
 
+        } else if (cnt == 0 && dice == -1) {
+            board[3][3] = 3;
+            board[3][2] = 0;
+            return;
         } else{
             x = p.playerPosition[0];
             y= p.playerPosition[1];
@@ -353,7 +357,8 @@ public class MainGame {
         time();
 
         // 1부터 4까지 랜덤 숫자 1개 생성
-        int random = (int) (Math.random() * 4) + 1;
+//        int random = (int) (Math.random() * 4) + 1;
+        int random = 3;
 
 
         //배열의 순서대로 각 숫자에 맞는 미니게임 실행

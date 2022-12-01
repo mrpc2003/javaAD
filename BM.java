@@ -1,13 +1,9 @@
 package AD_Project;
-
 import java.util.Scanner;
 import java.util.Stack;
-
 public class BM {
 	public static boolean p1isWin = false;
 	public static boolean p2isWin = false;
-
-
 	public static void start(String p1name, String p2name) {
 		final int SIZE = 5;
 		int x = 0, y = 0, num = 0;
@@ -16,25 +12,20 @@ public class BM {
 		int cnt = 0;
 		int player = 1;
 		int bingoCnt = SIZE * SIZE;
-
-
 		int[][] check = new int[SIZE][SIZE];
 		int[][] bingo = new int[SIZE][SIZE];
 		Scanner scanner = new Scanner(System.in);
-
 // 배열의 모든 요소를 1부터 SIZE*SIZE까지의 숫자로 초기화
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				bingo[i][j] = i * SIZE + j + 1;
 			}
 		}
-
 // 배열에 저장된 값을 뒤섞는다.
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				x = (int) (Math.random() * SIZE);
 				y = (int) (Math.random() * SIZE);
-
 				// bingo[i][j]와 임의로 선택된 값(bingo[x][y])을 바꾼다.
 				int tmp = bingo[i][j];
 				bingo[i][j] = bingo[x][y];
@@ -82,7 +73,6 @@ public class BM {
 				if (cnt == 5)
 					totalCnt1++;
 				cnt = 0;
-
 				for (int j = 0; j < SIZE; j++) {
 					if (check[j][i] == 1)
 						cnt++;
@@ -106,7 +96,6 @@ public class BM {
 				if (cnt == 5)
 					totalCnt2++;
 				cnt = 0;
-
 				for (int j = 0; j < SIZE; j++) {
 					if (check[j][i] == 2)
 						cnt++;
@@ -147,18 +136,14 @@ public class BM {
 				System.out.println("    *게임을 종료합니다*\n");
 				break;
 			}
-
 			if (player == 1) {
 				player = 2;
 			} else if (player == 2) {
 				player = 1;
 			}
-
 			if (num >= 1 || num <= 25)
 				bingoCnt--;
-
 		} while (bingoCnt >= 0);
 		System.out.println("------------무승부-----------");
-//		scanner.close();
 	}
 }

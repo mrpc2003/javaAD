@@ -28,16 +28,24 @@ class p1player extends mainGameConnect{ // 플레이어 1 클래스
 	public static Boolean p1Result(){
 		return p1isWin;
 	} // 플레이어 1 승리 여부 반환
-
+	@Override
+	public String toString() {
+		return p1;
+	}
 }
 class p2player extends mainGameConnect{ // 플레이어 2 클래스
 	static boolean p2isWin = false; // 플레이어 2 승리 여부
 	public static Boolean p2Result(){
 		return p2isWin;
 	} // 플레이어 2 승리 여부 반환
+	@Override
+	public String toString() {
+		return p2;
+	}
 }
 
 public class YachtGame_Main {
+
 	public static void start(String p1name, String p2name) throws InterruptedException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // 입력을 받기 위한 BufferedReader
 		ScoreBoard sb = new ScoreBoard(); // 점수판
@@ -49,7 +57,7 @@ public class YachtGame_Main {
 		String temp = ""; // 플레이어가 입력한 답을 임시로 저장
 		int[] dice = new int[5]; // 주사위 5개를 저장할 배열
 		System.out.println("-Yacht Dice-"); // 게임 이름 출력
-		System.out.println(p1 + "님과 " + p2 + "님의 Yacht Dice를 시작합니다."); // 플레이어1과 플레이어2의 이름 출력
+		System.out.println(p1.toString()+ "님과 " + p2.toString() + "님의 Yacht Dice를 시작합니다."); // 플레이어1과 플레이어2의 이름 출력
 		for (int i = 3; i > 0; i--) { // 3초 카운트 다운
 			time(); // 1초 쉬는 메소드
 			System.out.print("."); // . 출력
@@ -58,14 +66,14 @@ public class YachtGame_Main {
 		System.out.println("game Start!"); // 게임 시작 출력
 		time(); // 1초 쉬는 메소드
 		while (true) { // 무한 반복
-			System.out.println(p1player.p1 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어1의 차례 출력
+			System.out.println(p1.toString() + "님의 차례입니다. 주사위를 던집니다."); // 플레이어1의 차례 출력
 			rollDiceAll(dice); // 주사위 5개를 던지는 메소드
 			printRoll(dice); // 주사위 5개를 출력하는 메소드
 			time(); // 1초 쉬는 메소드
 			dice = reRollDice(dice); // 주사위를 재배치하는 메소드
 			p1inputScore(dice, sb); // 플레이어1의 점수를 입력하는 메소드
 			time(); // 1초 쉬는 메소드
-			System.out.println(p2player.p2 + "님의 차례입니다. 주사위를 던집니다."); // 플레이어2의 차례 출력
+			System.out.println(p2.toString() + "님의 차례입니다. 주사위를 던집니다."); // 플레이어2의 차례 출력
 			rollDiceAll(dice); // 주사위 5개를 던지는 메소드
 			printRoll(dice); // 주사위 5개를 출력하는 메소드
 			time(); // 1초 쉬는 메소드
@@ -783,10 +791,10 @@ public class YachtGame_Main {
 		if (sb.gameOverCheck()) { // 만약 gameOverCheck() 메소드가 true를 반환한다면
 			System.out.println("게임이 끝났습니다."); // 게임이 끝났다는 출력문
 			if (sb.p1Total > sb.p2Total) { // 만약 p1Total이 p2Total보다 크다면
-				System.out.println(p1player.p1 + "의 승리입니다."); // p1의 승리라는 출력문
+				System.out.println(p1.toString() + "의 승리입니다."); // p1의 승리라는 출력문
 				p1player.p1isWin = true; // p1Result() 메소드 호출
 			} else if (sb.p1Total < sb.p2Total) { // 만약 p1Total이 p2Total보다 작다면
-				System.out.println(p2player.p2 + "의 승리입니다."); // p2의 승리라는 출력문
+				System.out.println(p2.toString() + "의 승리입니다."); // p2의 승리라는 출력문
 				p2player.p2isWin = true; // p1Result() 메소드 호출
 			} else { // 만약 두 점수가 같다면
 				System.out.println("무승부입니다."); // 무승부라는 출력문
