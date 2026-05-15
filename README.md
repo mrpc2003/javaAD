@@ -2,9 +2,11 @@
 
 # 🎲 javaAD
 
-**Java OOP 학습용 콘솔 게임 모음집**
+English | [한국어](README.ko.md)
 
-4×4 보드맵 위에서 야추 다이스, 블랙잭, 빙고, 유령 잡기 미니게임을 즐기는 2인용 콘솔 게임 패키지
+**Java OOP Coursework — Console Game Collection**
+
+A 2-player console board game package featuring Yacht Dice, Blackjack, Bingo, and Ghost Chase mini-games on a 4×4 board map
 
 <br />
 
@@ -20,172 +22,156 @@
 
 ---
 
-## 📚 Table of Contents
+## Overview
 
-- [✨ 소개](#-소개)
-- [🕹️ 게임 라인업](#️-게임-라인업)
-- [🗂️ 프로젝트 구조](#️-프로젝트-구조)
-- [🧩 OOP 학습 포인트](#-oop-학습-포인트)
-- [🚀 빌드 & 실행](#-빌드--실행)
-- [🔁 게임 흐름](#-게임-흐름)
-- [📝 참고 사항](#-참고-사항)
-- [👤 Maintainer](#-maintainer)
+`javaAD` is a **console-based 2-player board game** written as a Java OOP coursework project.
+Two players roll dice to move across a main board, and landing on specific tiles triggers one of four mini-games.
+
+> All source files belong to the `AD_Project` package and run on the **standard JDK alone** — no external libraries required.
 
 ---
 
-## ✨ 소개
+## 🕹️ Mini-Game Lineup
 
-`javaAD`는 **Java 객체지향 과제로 작성된 콘솔 기반 2인용 보드게임**입니다.
-메인 보드 위에서 두 플레이어가 주사위를 굴려 이동하다가, 특정 칸에 도달하면 4가지 미니게임 중 하나가 실행되는 구조로 되어 있습니다.
+The main board (`MainGame`) dispatches to these four mini-games:
 
-> 모든 소스는 패키지 `AD_Project` 아래에 작성되어 있고, 외부 라이브러리 없이 **표준 JDK만으로 동작**합니다.
-
----
-
-## 🕹️ 게임 라인업
-
-> 메인 보드(`MainGame`)는 다음 4개의 미니게임을 호출합니다.
-
-| # | 미니게임 | 진입 클래스 | 핵심 규칙 (요약) |
+| # | Mini-Game | Entry Class | Core Rules |
 |---|---|---|---|
-| 1 | 🎲 **Yacht Dice** | `YachtGame_Main` | 5개의 주사위로 족보(에이스~야추)를 채워 점수 합계 비교 |
-| 2 | 🃏 **Blackjack** | `blackjack_withclass` | 카드 합 21에 가깝게 만들기 (Hit / Stay / Bust) |
-| 3 | 🔢 **Bingo** | `BM` | 5×5 보드에서 숫자를 불러 라인을 먼저 완성 |
-| 4 | 👻 **유령(술래잡기)** | `oriented` | 6×6 보드 위에서 4 good / 4 bad 유령을 배치, 상대 진영의 화살표 칸으로 good을 보내거나 상대의 good을 모두 잡으면 승리 |
+| 1 | 🎲 **Yacht Dice** | `YachtGame_Main` | Roll 5 dice, fill scoring categories (Aces through Yacht), compare totals |
+| 2 | 🃏 **Blackjack** | `blackjack_withclass` | Get as close to 21 as possible (Hit / Stay / Bust) |
+| 3 | 🔢 **Bingo** | `BM` | Call numbers on a 5×5 board, first to complete a line wins |
+| 4 | 👻 **Ghost Chase** | `oriented` | Place 4 good / 4 bad ghosts on a 6×6 board; send your good ghosts to the opponent's arrow tile or capture all their good ghosts to win |
 
 ---
 
-## 🗂️ 프로젝트 구조
+## 🗂️ Project Structure
 
 ```
 javaAD/
-├── MainGame.java              # 메인 진입점, 4×4 보드맵·턴 제어·미니게임 호출
-├── YachtGame_Main.java        # 야추 다이스 본체 (mainGameConnect, p1player, p2player 포함)
-├── ScoreBoard.java            # 야추 다이스 점수판 데이터 클래스
-├── blackjack_withclass.java   # 블랙잭 (Game, Actor, ActorState enum)
-├── BM.java                    # 5×5 빙고
-├── oriented.java              # 유령 잡기 (Entity / GoodEntity / BadEntity / Ghost_move / GamePlay)
-├── javaAD.iml                 # IntelliJ 모듈 설정
-└── .idea/                     # IntelliJ 프로젝트 메타 (인코딩: x-windows-949)
+├── MainGame.java              # Entry point — 4×4 board, turn control, mini-game dispatch
+├── YachtGame_Main.java        # Yacht Dice game loop (mainGameConnect, p1player, p2player)
+├── ScoreBoard.java            # Yacht Dice scoreboard data class
+├── blackjack_withclass.java   # Blackjack (Game, Actor, ActorState enum)
+├── BM.java                    # 5×5 Bingo
+├── oriented.java              # Ghost Chase (Entity / GoodEntity / BadEntity / Ghost_move / GamePlay)
+└── .gitignore                 # IntelliJ & Java build output ignores
 ```
 
-### 📌 파일별 역할 한눈에 보기
+### File Responsibilities
 
-| 파일 | 주요 클래스 | 역할 |
+| File | Key Classes | Role |
 |---|---|---|
-| `MainGame.java` | `MainGame`, `MainGameBoard`, `GamePlayer` | **프로그램 진입점**. 두 플레이어의 이름을 입력받고 4×4 보드를 순회하며 턴 진행 |
-| `YachtGame_Main.java` | `YachtGame_Main`, `mainGameConnect`, `p1player`, `p2player` | 야추 다이스 게임 루프, 주사위 굴리기/리롤, 점수 입력 |
-| `ScoreBoard.java` | `ScoreBoard` | 야추 다이스 12개 족보별 점수/표시문자열/입력 가능 여부 상태 보관 |
-| `blackjack_withclass.java` | `blackjack_withclass`, `Game`, `Actor`, `ActorState` | 카드 더미·플레이어/딜러 행동 상태(Hit·Stay·Bust)를 enum으로 모델링 |
-| `BM.java` | `BM` | 무작위 셔플된 5×5 빙고판, 입력 숫자 매칭 후 라인 카운트 |
-| `oriented.java` | `oriented`, `GamePlay`, `Ghost_move`, `Entity`, `GoodEntity`, `BadEntity` | 유령 4 good + 4 bad 배치, `wasd` 입력으로 이동, 화살표 칸 도달·전멸 조건 판정 |
+| `MainGame.java` | `MainGame`, `MainGameBoard`, `GamePlayer` | **Program entry point.** Accepts player names, renders the 4×4 board, manages turns |
+| `YachtGame_Main.java` | `YachtGame_Main`, `mainGameConnect`, `p1player`, `p2player` | Yacht Dice game loop — rolling, re-rolling, score entry |
+| `ScoreBoard.java` | `ScoreBoard` | Stores scores, display strings, and availability flags for 12 Yacht categories |
+| `blackjack_withclass.java` | `blackjack_withclass`, `Game`, `Actor`, `ActorState` | Card deck, player/dealer state modeled with enum |
+| `BM.java` | `BM` | Shuffled 5×5 bingo board, number matching, line counting |
+| `oriented.java` | `oriented`, `GamePlay`, `Ghost_move`, `Entity`, `GoodEntity`, `BadEntity` | Ghost placement (4 good + 4 bad), `wasd` movement, win-condition checks |
 
 ---
 
-## 🧩 OOP 학습 포인트
+## 🧩 OOP Concepts Demonstrated
 
-이 프로젝트는 **객체지향의 핵심 개념을 하나씩 직접 구현**하면서 익히는 데 초점이 있습니다.
+This project focuses on **hands-on implementation of core OOP principles**.
 
 <details>
-<summary><b>🔍 어떤 OOP 개념이 어디서 등장하는지 펼쳐보기</b></summary>
+<summary><b>Where each concept appears</b></summary>
 
-| 개념 | 등장 위치 | 설명 |
+| Concept | Location | Description |
 |---|---|---|
-| **클래스 / 인스턴스** | 전반 | `GamePlayer`, `Game`, `MainGameBoard` 등 게임 도메인을 클래스로 모델링 |
-| **상속 (extends)** | `oriented.java` | `GoodEntity`, `BadEntity`가 공통 부모 `Entity`를 상속 |
-| **상속 + 정적 필드 공유** | `YachtGame_Main.java` | `p1player`, `p2player`가 `mainGameConnect`를 상속해 이름/승패 상태 공유 |
-| **다형성 / `instanceof`** | `oriented.java` (`Ghost_move.Check`) | 충돌한 유령이 `GoodEntity`인지 `BadEntity`인지 런타임 판별 |
-| **enum** | `blackjack_withclass.java` | `ActorState { Hit, Stay, Bust }` 로 행동 상태를 표현 |
-| **캡슐화 (getter/setter)** | `Actor`, `mainGameConnect` | private/protected 필드 + 접근자 메서드 |
-| **정적 멤버 vs 인스턴스 멤버** | `MainGameBoard`, `mainGameConnect` | 게임 전역 상태(보드, 카운터, 플레이어 이름)는 static, 플레이어별 상태는 인스턴스 필드 |
-| **객체 협력** | `MainGame` ↔ `MainGameBoard` ↔ `GamePlayer` | 보드가 플레이어 객체를 참조해 위치/상태를 갱신 |
+| **Classes & Instances** | Throughout | `GamePlayer`, `Game`, `MainGameBoard` model the game domain |
+| **Inheritance** | `oriented.java` | `GoodEntity` and `BadEntity` extend a common `Entity` parent |
+| **Inheritance + Static Fields** | `YachtGame_Main.java` | `p1player` and `p2player` inherit from `mainGameConnect` to share name/win state |
+| **Polymorphism / `instanceof`** | `oriented.java` (`Ghost_move.Check`) | Runtime check whether a captured ghost is `GoodEntity` or `BadEntity` |
+| **Enum** | `blackjack_withclass.java` | `ActorState { Hit, Stay, Bust }` models player action state |
+| **Encapsulation** | `Actor`, `mainGameConnect` | Private/protected fields with getter/setter methods |
+| **Static vs Instance Members** | `MainGameBoard`, `mainGameConnect` | Global game state (board, counters) is static; per-player state is instance-level |
+| **Object Collaboration** | `MainGame` ↔ `MainGameBoard` ↔ `GamePlayer` | Board references player objects to update position/state |
 
 </details>
 
 ---
 
-## 🚀 빌드 & 실행
+## 🚀 Build & Run
 
-### ✅ 사전 준비
+### Prerequisites
 
-- **JDK 8 이상** 설치
-- (권장) **IntelliJ IDEA** — 본 저장소에는 IntelliJ 모듈 파일(`javaAD.iml`)과 `.idea/` 설정이 포함되어 있어 바로 열 수 있습니다.
+- **JDK 8+** installed
+- (Recommended) **IntelliJ IDEA** — the repository includes IntelliJ project metadata for immediate use
 
-### 1) IntelliJ IDEA에서 실행 (권장)
+### Option 1: IntelliJ IDEA (Recommended)
 
-1. IntelliJ IDEA에서 이 폴더를 **Open**
-2. `MainGame.java`의 `main` 메서드 옆 ▶ 아이콘 클릭 → **Run 'MainGame.main()'**
-3. 콘솔에 두 플레이어의 이름을 입력하면 게임 시작
+1. Open this folder in IntelliJ IDEA
+2. Click the ▶ icon next to `main` in `MainGame.java` → **Run 'MainGame.main()'**
+3. Enter two player names in the console to start
 
-### 2) 명령줄에서 `javac` / `java`로 실행
+### Option 2: Command Line
 
-> 모든 소스가 `package AD_Project;` 로 선언되어 있으므로, **`AD_Project/` 하위로 옮긴 뒤 부모 디렉터리에서 컴파일**해야 패키지 구조가 맞습니다.
+All sources declare `package AD_Project;`, so they must be compiled from a parent directory:
 
 ```bash
-# 1) 패키지 디렉터리 구조로 정리
+# 1) Set up package directory structure
 mkdir -p AD_Project
 cp *.java AD_Project/
 
-# 2) 컴파일 (소스가 MS949 / CP949 인코딩이므로 -encoding 옵션 필수)
+# 2) Compile (source files are MS949-encoded — the -encoding flag is required)
 javac -encoding MS949 -d out AD_Project/*.java
 
-# 3) 실행
+# 3) Run
 java -cp out AD_Project.MainGame
 ```
 
-> 💡 **Windows 콘솔(cmd)** 에서 한글이 깨진다면 `chcp 949` 후 실행하거나, 터미널 인코딩을 EUC-KR/MS949로 맞춰주세요.
-> macOS / Linux의 UTF-8 터미널에서도 콘솔이 한글을 표시할 수 있다면 동작하지만, 소스 자체가 MS949이므로 컴파일 시 `-encoding MS949` 지정이 가장 안전합니다.
+> 💡 On **Windows cmd**, run `chcp 949` first if Korean text appears garbled.
+> On macOS/Linux UTF-8 terminals, the game may display Korean correctly, but always specify `-encoding MS949` at compile time.
 
-### 3) 미니게임 단독 실행은 지원되지 않음
+### Note: No Standalone Mini-Game Execution
 
-각 미니게임 클래스는 `static start(...)` / `static Bstart(...)` 형태의 **호출 메서드**를 제공하지만, 자체 `main` 메서드는 `MainGame` 한 곳뿐입니다. 따라서 **실행은 `MainGame`을 통해서만 진행**됩니다.
+Each mini-game exposes a `static start(...)` / `static Bstart(...)` method but has no independent `main`. All games are launched through `MainGame`.
 
 ---
 
-## 🔁 게임 흐름
+## 🔁 Game Flow
 
 ```mermaid
 flowchart TD
-    A([▶ MainGame 실행]) --> B[Player1 / Player2 이름 입력]
-    B --> C[4×4 메인 보드 출력]
-    C --> D{현재 플레이어 턴}
-    D -->|주사위 굴림| E[보드 위 이동]
-    E --> F{도착 칸 종류}
-    F -->|M 칸| G[🎮 미니게임 트리거]
-    F -->|C 칸| H[🎴 찬스 카드]
-    F -->|일반 칸| I[랜덤 점수 획득]
+    A([▶ Run MainGame]) --> B[Enter Player 1 / Player 2 names]
+    B --> C[Display 4×4 main board]
+    C --> D{Current player's turn}
+    D -->|Roll dice| E[Move on board]
+    E --> F{Tile type?}
+    F -->|M tile| G[🎮 Mini-game trigger]
+    F -->|C tile| H[🎴 Chance card]
+    F -->|Normal tile| I[Random score gain]
     G --> G1[🎲 Yacht Dice]
     G --> G2[🃏 Blackjack]
     G --> G3[🔢 Bingo]
-    G --> G4[👻 유령 잡기]
-    G1 --> J[점수 반영]
+    G --> G4[👻 Ghost Chase]
+    G1 --> J[Update scores]
     G2 --> J
     G3 --> J
     G4 --> J
     H --> J
     I --> J
-    J --> K{종료 조건?}
-    K -->|아니오| D
-    K -->|예| L([🏁 최종 점수 비교 · 승자 결정])
+    J --> K{End condition?}
+    K -->|No| D
+    K -->|Yes| L([🏁 Compare final scores · Declare winner])
 ```
 
 ---
 
-## 📝 참고 사항
+## 📝 Notes
 
-- 🇰🇷 **한글 인코딩**: 소스 파일은 `x-windows-949` (MS949 / CP949) 로 작성되어 있습니다. (`.idea/encodings.xml` 참고) UTF-8 기준 도구로 열면 한글 주석이 깨져 보일 수 있습니다.
-- 🧪 **별도의 테스트 코드는 포함되어 있지 않습니다.** 콘솔에서 직접 플레이하며 동작을 확인하는 형태입니다.
-- 📦 **빌드 도구 없음**: Maven / Gradle 설정이 없으며, 표준 JDK의 `javac` / `java`만으로 충분합니다.
-- 🎯 **목적**: 학습용 OOP 과제 — 실서비스/배포를 가정한 코드는 아닙니다.
+- 🇰🇷 **Korean Encoding**: Source files are encoded in `x-windows-949` (MS949/CP949). Korean comments may appear garbled in UTF-8 editors.
+- 🧪 **No automated tests** are included — gameplay is verified by playing directly in the console.
+- 📦 **No build tools**: No Maven or Gradle configuration; standard `javac` / `java` is sufficient.
+- 🎯 **Purpose**: Academic OOP coursework — not intended for production deployment.
 
 ---
-
-## 👤 Maintainer
 
 <div align="center">
 
 **[@mrpc2003](https://github.com/mrpc2003)**
 
-이 저장소는 학습용 과제 모음입니다. 개선 아이디어나 버그 제보는 Issues / PR로 환영합니다.
+This repository is a coursework game collection. Bug reports and improvement ideas are welcome via Issues or PRs.
 
 </div>
