@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎲 javaAD
+# 🎲 Java 콘솔 게임 컬렉션
 
 [English](README.md) | 한국어
 
@@ -24,7 +24,7 @@
 
 ## 소개
 
-`javaAD`는 **Java 객체지향 과제로 작성된 콘솔 기반 2인용 보드게임**입니다.
+`java-console-game-collection`은 **Java 객체지향 과제로 작성된 콘솔 기반 2인용 보드게임**입니다.
 메인 보드 위에서 두 플레이어가 주사위를 굴려 이동하다가, 특정 칸에 도달하면 4가지 미니게임 중 하나가 실행되는 구조로 되어 있습니다.
 
 > 모든 소스는 패키지 `AD_Project` 아래에 작성되어 있고, 외부 라이브러리 없이 **표준 JDK만으로 동작**합니다.
@@ -47,7 +47,7 @@
 ## 🗂️ 프로젝트 구조
 
 ```
-javaAD/
+java-console-game-collection/
 ├── MainGame.java              # 메인 진입점, 4×4 보드맵·턴 제어·미니게임 호출
 ├── YachtGame_Main.java        # 야추 다이스 본체 (mainGameConnect, p1player, p2player 포함)
 ├── ScoreBoard.java            # 야추 다이스 점수판 데이터 클래스

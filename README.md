@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎲 javaAD
+# 🎲 Java Console Game Collection
 
 English | [한국어](README.ko.md)
 
@@ -24,7 +24,7 @@ A 2-player console board game package featuring Yacht Dice, Blackjack, Bingo, an
 
 ## Overview
 
-`javaAD` is a **console-based 2-player board game** written as a Java OOP coursework project.
+`java-console-game-collection` is a **console-based 2-player board game** written as a Java OOP coursework project.
 Two players roll dice to move across a main board, and landing on specific tiles triggers one of four mini-games.
 
 > All source files belong to the `AD_Project` package and run on the **standard JDK alone** — no external libraries required.
@@ -47,7 +47,7 @@ The main board (`MainGame`) dispatches to these four mini-games:
 ## 🗂️ Project Structure
 
 ```
-javaAD/
+java-console-game-collection/
 ├── MainGame.java              # Entry point — 4×4 board, turn control, mini-game dispatch
 ├── YachtGame_Main.java        # Yacht Dice game loop (mainGameConnect, p1player, p2player)
 ├── ScoreBoard.java            # Yacht Dice scoreboard data class
