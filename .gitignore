@@ -1,0 +1,12 @@
+# IntelliJ IDEA / local IDE metadata
+.idea/
+*.iml
+
+# Java build outputs
+*.class
+out/
+build/
+target/
+
+# Gradle local state
+.gradle/
